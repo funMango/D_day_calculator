@@ -11,22 +11,23 @@ struct DayInfoDummy {
     var dummys: [DayInfo] = []
     
     init() {
-        let dayInfoes: [(String, String ,String)] = [
-            ("Jeju Travel", "2024-07-08", "2024-08-11"),
-            ("Seoul Travel", "2024-09-11", "2024-10-11"),
-            ("Busan Travel", "2024-11-08", "2024-12-11"),
+        let dayInfoes: [(String, String, Mode)] = [
+            ("Jeju Travel", "2025-02-07", .dDay),
+            ("Seoul Travel", "2025-09-11", .dDay),
+            ("Busan Travel", "2025-11-08", .dDay),
+            ("Anniversary", "2023-11-18", .counting),
         ]
                         
         for info in dayInfoes {
             let title = info.0
-            let startDate = info.1
-            let dDay = info.2
+            let targetDate = info.1
+            let mode = info.2
             
-            if let startDate = createDate(from: startDate), let dDay = createDate(from: dDay) {
-                let dayInfo = DayInfo(title: title, startDay: startDate, endDate: dDay)
+            if let targetDate = createDate(from: targetDate) {
+                let dayInfo = DayInfo(title: title, targetDate: targetDate, mode: mode)
                 dummys.append(dayInfo)
             } else {
-                print("날짜 변환 실패: \(startDate)또는 \(dDay)")
+                print("날짜 변환 실패: \(targetDate)")
             }
         }
     }

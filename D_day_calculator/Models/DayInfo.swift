@@ -9,25 +9,28 @@ import Foundation
 
 struct DayInfo: Hashable {
     var title: String
-    var startDay: Date
-    var endDate: Date
-    var dDay: Int
+    var targetDate: Date
+    var mode: Mode
     
-    init(title: String, startDay: Date, endDate: Date) {
+    init(title: String, targetDate: Date, mode: Mode) {
         self.title = title
-        self.startDay = startDay
-        self.endDate = endDate
-        self.dDay = DayInfo.calcDateDiff(from: startDay, to: endDate)
+        self.targetDate = targetDate
+        self.mode = mode
     }
     
-    static func calcDateDiff(from startDate: Date, to dDay: Date) -> Int {
+    func calcDateDiff() -> Int {
+        let today = Date()
         let calendar = Calendar.current
         let components = calendar.dateComponents(
             [.day, .hour, .minute, .second],
-            from: startDate,
-            to: dDay
+            from: targetDate,
+            to: today
         )
         
         return components.day ?? 0
+    }
+    
+    func getTargetDate() -> String {
+        return Convertor.convertToDate(date: targetDate, format: "yyyy.MM.dd")
     }
 }

@@ -22,7 +22,7 @@ struct MainView: View {
             .listStyle(PlainListStyle())
             .navigationTitle("List")
             .navigationDestination(for: DayInfo.self) { info in
-                DetailsScreen(dayInfo: info)
+                DayDetailView(dayInfo: info)
             }
         }
     }
@@ -34,22 +34,32 @@ struct MainCellView: View {
     
     var body: some View {
         HStack {
-            Text(dayInfo.title)
-                .font(.headline)
+            VStack(alignment: .leading) {
+                Text(dayInfo.title)
+                    .font(.headline)
+                Text(dayInfo.getTargetDate())
+                    .font(.caption)
+                    .foregroundStyle(Color.gray)
+            }
             
             Spacer()
             
-            Text("\(dayInfo.dDay) days")
+            if dayInfo.mode == .dDay {
+                Text("D\(dayInfo.calcDateDiff())")
+            } else {
+                Text("\(dayInfo.calcDateDiff()) day")
+            }
+            
         }
     }
 }
 
-struct DetailsScreen: View {
+struct DayDetailView: View {
     var dayInfo: DayInfo
     var body: some View {
         VStack {
-            Text("\(dayInfo.startDay)")
-            Text("\(dayInfo.dDay)")
+            Text("Target Date: \(dayInfo.targetDate)")
+            Text("Date Diff: \(dayInfo.calcDateDiff())")
         }
         .navigationTitle("\(dayInfo.title)")
     }
