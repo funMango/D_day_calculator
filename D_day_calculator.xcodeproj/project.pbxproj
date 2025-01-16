@@ -29,6 +29,20 @@
 		5ADC1B4C2D33931F0075DA3B /* D_day_calculatorUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = D_day_calculatorUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		5A8CC17B2D38C82200126C99 /* Exceptions for "D_day_calculator" folder in "D_day_calculatorTests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Interators/DateInteractor.swift,
+				Presents/ViewModels/DateViewModel.swift,
+				Presents/Views/DatePickerView.swift,
+				Presents/Views/ModeSelectionView.swift,
+				Utilities/Convertor.swift,
+			);
+			target = 5ADC1B412D33931F0075DA3B /* D_day_calculatorTests */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		5ADC1B452D33931F0075DA3B /* D_day_calculatorTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
@@ -42,6 +56,9 @@
 		};
 		5ADC1B912D33DF410075DA3B /* D_day_calculator */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				5A8CC17B2D38C82200126C99 /* Exceptions for "D_day_calculator" folder in "D_day_calculatorTests" target */,
+			);
 			path = D_day_calculator;
 			sourceTree = "<group>";
 		};
