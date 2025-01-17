@@ -9,12 +9,12 @@ import SwiftUI
 
 struct MainView: View {
     @StateObject private var viewModel = DateViewModel(interactor: DateDiffInteractor())
-    @State private var path = NavigationPath()
+    @StateObject private var navigationPath = NavigationPathObject()
     let dayInfoDummys = DayInfoDummy().dummys
     
     
     var body: some View {
-        NavigationStack(path: $path) {
+        NavigationStack(path: $navigationPath.path) {
             VStack {
                 HStack {
                     HStack {
@@ -27,7 +27,7 @@ struct MainView: View {
                     .padding()
                     
                     Button {
-                        path.append("ModeSelectionView")
+                        navigationPath.path.append("ModeSelectionView")
                     } label: {
                         Image(systemName: "plus.circle.fill")
                             .resizable()
@@ -41,7 +41,7 @@ struct MainView: View {
                 List {
                     ForEach(dayInfoDummys, id: \.self) { info in
                         Button {
-                            path.append(info)
+                            navigationPath.path.append(info)
                         } label: {
                             MainCellView(dayInfo: info)
                         }
@@ -52,22 +52,15 @@ struct MainView: View {
             
             .navigationDestination(for: String.self) { string in
                 if string == "ModeSelectionView" {
-                    ModeSelectionView(path: $path)
+                    ModeSelectionView()
                 }
             }
             .navigationDestination(for: DayInfo.self) { info in
-                DayDetailView(path: $path, dayInfo: info)
+                DayDetailView(dayInfo: info)
             }
         }
         .environmentObject(viewModel)
-    }
-}
-
-struct NextView: View {
-    @Binding var path: NavigationPath
-    
-    var body: some View {
-        Text("NextView")
+        .environmentObject(navigationPath)
     }
 }
 
@@ -97,8 +90,6 @@ struct MainCellView: View {
 }
 
 struct DayDetailView: View {
-    @Binding var path: NavigationPath
-    
     var dayInfo: DayInfo
     var body: some View {
         VStack {

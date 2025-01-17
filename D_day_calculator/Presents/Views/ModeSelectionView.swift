@@ -22,7 +22,7 @@ enum Mode: String, CaseIterable, Hashable {
 }
 
 struct ModeSelectionView: View {
-    @Binding var path: NavigationPath
+    @EnvironmentObject var navigationPath: NavigationPathObject
     @EnvironmentObject var viewModel: DateViewModel
     
     var body: some View {
@@ -40,7 +40,7 @@ struct ModeSelectionView: View {
             List {
                 ForEach(Mode.allCases, id: \.self) { mode in
                     Button {
-                        path.append(mode)
+                        navigationPath.path.append(mode)
                         viewModel.selectMode(from: mode)
                     } label: {
                         ModeCell(mode: mode)
@@ -48,9 +48,9 @@ struct ModeSelectionView: View {
                 }
             }
             .navigationDestination(for: Mode.self) { mode in
-                DatePickerView(path: $path)
+                DatePickerView()
             }
-            
+            .environmentObject(navigationPath)
             .listStyle(.plain)
             .listRowSeparator(.hidden)
             .listRowSpacing(15)
@@ -89,7 +89,6 @@ struct TestView: View {
     }
 }
 
-#Preview {
-    @Previewable @State var path = NavigationPath()
-    ModeSelectionView(path: $path)
+#Preview {    
+    ModeSelectionView()
 }

@@ -9,9 +9,9 @@
 import SwiftUI
 
 struct DatePickerView: View {
-    @Binding var path: NavigationPath
-    @State private var showingSheet = false
+    @EnvironmentObject var navigationPath: NavigationPathObject
     @EnvironmentObject var viewModel: DateViewModel
+    @State private var showingSheet = false
                 
     var body: some View {
         VStack {
@@ -106,7 +106,6 @@ struct DatePickerWheelView: View {
     }
 }
 
-#Preview {
-    @Previewable @State var path = NavigationPath()    
-    DatePickerView(path: $path)
+#Preview {    
+    DatePickerView()
 }
