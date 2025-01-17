@@ -90,5 +90,8 @@ struct TestView: View {
 }
 
 #Preview {    
+    let dateViewModel = DateViewModel(interactor: DateDiffInteractor())
     ModeSelectionView()
+        .environmentObject(dateViewModel)
+        .environmentObject(NavigationPathObject())
 }

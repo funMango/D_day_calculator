@@ -107,5 +107,8 @@ struct DatePickerWheelView: View {
 }
 
 #Preview {    
+    let dateViewModel = DateViewModel(interactor: DateDiffInteractor())
     DatePickerView()
+        .environmentObject(dateViewModel)
+        .environmentObject(NavigationPathObject())
 }
