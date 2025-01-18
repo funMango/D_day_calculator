@@ -12,35 +12,47 @@ struct DatePickerView: View {
     @EnvironmentObject var navigationPath: NavigationPathObject
     @EnvironmentObject var viewModel: DateViewModel
     @State private var showingSheet = false
+    private var today = Date()
                 
     var body: some View {
         VStack {
             HStack {
-                Text("Date Selection")
-                    .font(.system(size: 35))
-                    .fontWeight(.bold)
+                VStack(alignment: .leading) {
+                    Text("D\(viewModel.totalDays)")
+                        .font(.system(size: 35))
+                        .fontWeight(.bold)
+                        .foregroundColor(.black)
+                        .padding(.bottom, -25)
+                        
+                    Text("\nfrom \(today.formatted(DateFormat.USA.rawValue))")
+                        .font(.system(size: 20))
+                        .fontWeight(.medium)
+                        .foregroundColor(.black)
+                }
                 
                 Spacer()
             }
             .padding()
+            .padding(.bottom, 30)
+            .frame(maxWidth: .infinity)
             
-            Spacer()
             
-            Text("\(viewModel.totalDays)")
-                .font(.system(size: 50))
-                .fontWeight(.bold)
-                .padding(.top, 50)
-                .padding(.bottom, 50)
-                .foregroundStyle(Color.red)
-                
-            List {
+            VStack {
                 TextField("Title", text: $viewModel.title)
+                    
                     .onAppear {
                         UITextField.appearance().clearButtonMode = .whileEditing
                     }
-                                                    
+                
+                Divider()
+                    .background(Color.black)
+            }
+            .padding(.horizontal)
+            .padding(.bottom, 10)
+            
+            VStack {
                 HStack {
-                    Text("Date")
+                    Text(viewModel.mode.rawValue)
                         .fontWeight(.regular)
                         .foregroundColor(.black)
                     
@@ -52,19 +64,46 @@ struct DatePickerView: View {
                         HStack {
                             Text("\(viewModel.selectedDate.formatted(DateFormat.USA.rawValue))")
                                 .fontWeight(.semibold)
+                                .foregroundStyle(.black)
                                 
                             Image(systemName: "chevron.down")
                                 .resizable()
                                 .fontWeight(.semibold)
                                 .frame(width: 10, height: 7)
+                                .foregroundStyle(.black)
                         }
                     }
                 }
+                
+                Divider()
+                    .background(Color.black)
             }
-            .listStyle(.plain)
+            .padding(.horizontal)
             
+            
+            
+            
+            
+                                                
             Spacer()
+            
+            Button {
+                
+            } label: {
+                Text("Complete")
+                    .foregroundStyle(.white)
+                    .font(.system(.title3))
+                    .fontWeight(.semibold)
+                    .padding()
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 50)
+                    .background(Color.black)
+                    .cornerRadius(10)
+            }
+            .padding()
         }
+        
+        .environmentObject(viewModel)
         .sheet(isPresented: $showingSheet) {
             DatePickerWheelView(selectedDate: $viewModel.selectedDate)
                 .presentationDetents([.fraction(0.45)])
@@ -77,17 +116,30 @@ struct DatePickerView: View {
 
 struct DatePickerWheelView: View {
     @Environment(\.presentationMode) var presentationMode
+    @EnvironmentObject var viewModel: DateViewModel
     @Binding var selectedDate: Date
     
     var body: some View {
         VStack {
-            DatePicker(
-                "Select Date",
-                selection: $selectedDate,
-                displayedComponents: .date
-            )
-            .labelsHidden()
-            .datePickerStyle(.wheel)
+            if viewModel.mode == .dDay {
+                DatePicker(
+                    "Select Date",
+                    selection: $selectedDate,
+                    in: Date()...,
+                    displayedComponents: .date
+                )
+                .labelsHidden()
+                .datePickerStyle(.wheel)
+            } else {
+                DatePicker(
+                    "Select Date",
+                    selection: $selectedDate,
+                    in: ...Date(),
+                    displayedComponents: .date
+                )
+                .labelsHidden()
+                .datePickerStyle(.wheel)
+            }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         
@@ -96,6 +148,7 @@ struct DatePickerWheelView: View {
         } label: {
             Text("Select")
                 .font(.title3)
+                .fontWeight(.semibold)
                 .foregroundColor(Color.white)
                 .frame(maxWidth: .infinity)
                 .frame(height: 50)
