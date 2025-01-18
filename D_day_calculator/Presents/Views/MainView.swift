@@ -18,24 +18,22 @@ struct MainView: View {
             VStack {
                 HStack {
                     HStack {
-                        Text("List")
-                            .font(.system(size: 35))
-                            .fontWeight(.bold)
+                        TitleText(title: "List")
                         
                         Spacer()
                     }
-                    .padding()
+                    
                     
                     Button {
                         navigationPath.path.append("ModeSelectionView")
                     } label: {
                         Image(systemName: "plus.circle.fill")
                             .resizable()
-                            .frame(width: 35, height: 35)
-                            .padding()
+                            .frame(width: 30, height: 30)                            
                             .foregroundStyle(.red)
                     }
                 }
+                .padding()
                 
                 
                 List {

@@ -28,9 +28,7 @@ struct ModeSelectionView: View {
     var body: some View {
             VStack {
                 HStack {
-                    Text("Mode Selection")
-                        .font(.system(size: 35))
-                        .fontWeight(.bold)
+                    TitleText(title: "Mode")
                     
                     Spacer()
                 }
