@@ -21,19 +21,19 @@ final class DateDiffInteractorTest: XCTestCase {
     
     func test_execute_dateDiff() throws {
         // Given
-        let testCases: [(targetDate: DateComponents, today: DateComponents, expected: Int)] = [
+        let testCases: [(targetDate: DateComponents, today: DateComponents, mode: Mode, expected: String)] = [
             // same date
-            (DateComponents(year: 2025, month: 2, day: 14), DateComponents(year: 2025, month: 2, day: 14), 0),
+            (DateComponents(year: 2025, month: 2, day: 14), DateComponents(year: 2025, month: 2, day: 14), mode: Mode.dDay, "D-day"),
             
             // day diff
-            (DateComponents(year: 2025, month: 2, day: 14), DateComponents(year: 2025, month: 2, day: 13), -1),
+            (DateComponents(year: 2025, month: 2, day: 14), DateComponents(year: 2025, month: 2, day: 13), mode: Mode.dDay, "D-1"),
             
             // month diff
-            (DateComponents(year: 2025, month: 3, day: 14), DateComponents(year: 2025, month: 2, day: 13), -29),
+            (DateComponents(year: 2025, month: 3, day: 14), DateComponents(year: 2025, month: 2, day: 13), mode: Mode.dDay, "D-29"),            
             
             // year diff
-            (DateComponents(year: 2025, month: 3, day: 14), DateComponents(year: 2024, month: 2, day: 13), -395),
-            (DateComponents(year: 2023, month: 11, day: 18), DateComponents(year: 2025, month: 1, day: 16), 425),
+            (DateComponents(year: 2025, month: 3, day: 14), DateComponents(year: 2024, month: 2, day: 13), mode: Mode.dDay, "D-395"),
+            (DateComponents(year: 2023, month: 11, day: 18), DateComponents(year: 2025, month: 1, day: 16), mode: Mode.counting, "426 days"),
         ]
         
         for testCase in testCases {
@@ -47,7 +47,8 @@ final class DateDiffInteractorTest: XCTestCase {
             
             let dateContext = DateContext(
                 targetDate: targetDate,
-                referenceDate: today,
+                today: today,
+                mode: testCase.mode,
                 timeRegion: TimeRegion.seoul
             )
                         

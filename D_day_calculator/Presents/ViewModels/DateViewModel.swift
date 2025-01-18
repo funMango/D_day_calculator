@@ -10,7 +10,7 @@ import Foundation
 class DateViewModel: ObservableObject {
     @Published var title = ""
     @Published var selectedDate = Date()
-    @Published var totalDays = 0
+    @Published var totalDays = ""
     @Published var mode = Mode.dDay
     private var interactor: DateInteractor
     
@@ -24,38 +24,24 @@ class DateViewModel: ObservableObject {
         
         switch mode {
         case .dDay:
-            totalDays = 0
+            totalDays = "D-day"
         case .counting:
-            totalDays = 1
+            totalDays = "1 days"
         }
     }
                     
     func calcDateDiff() {
-        let targetDate: Date
-        let referenceDate: Date
-                
-        switch mode {
-        case .dDay:
-            targetDate = selectedDate
-            referenceDate = Date()
-        case .counting:
-            targetDate = Date()
-            referenceDate = selectedDate
-        }
+        let targetDate = selectedDate
+        let referenceDate = Date()
         
         let dateContext = DateContext(
             targetDate: targetDate,
-            referenceDate: referenceDate,
+            today: referenceDate,
+            mode: mode,
             timeRegion: TimeRegion.seoul
         )
         
-        let result = interactor.execute(from: dateContext)
-        
-        switch mode {
-        case .dDay:
-            totalDays = result
-        case .counting:
-            totalDays = result + 1
-        }                                        
+        totalDays = interactor.execute(from: dateContext)
+                      
     }
 }

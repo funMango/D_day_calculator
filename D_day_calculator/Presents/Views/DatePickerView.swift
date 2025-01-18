@@ -18,7 +18,7 @@ struct DatePickerView: View {
         VStack {
             HStack {
                 VStack(alignment: .leading) {
-                    Text("D\(viewModel.totalDays)")
+                    Text("\(viewModel.totalDays)")
                         .font(.system(size: 35))
                         .fontWeight(.bold)
                         .foregroundColor(.black)

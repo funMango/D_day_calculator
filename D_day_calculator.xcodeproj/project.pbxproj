@@ -34,9 +34,11 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Interators/DateInteractor.swift,
+				Models/NavigationPath.swift,
 				Presents/ViewModels/DateViewModel.swift,
 				Presents/Views/DatePickerView.swift,
 				Presents/Views/ModeSelectionView.swift,
+				UI/Element/TitleText.swift,
 				Utilities/Convertor.swift,
 			);
 			target = 5ADC1B412D33931F0075DA3B /* D_day_calculatorTests */;
