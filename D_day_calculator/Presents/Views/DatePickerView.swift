@@ -84,7 +84,7 @@ struct DatePickerView: View {
             Spacer()
             
             Button {
-                
+                viewModel.saveDate()
             } label: {
                 Text("Complete")
                     .foregroundStyle(.white)
@@ -153,7 +153,12 @@ struct DatePickerWheelView: View {
 }
 
 #Preview {
-    let viewModel = DateViewModel()
+    let viewModel = DateViewModel(
+        dateManageInteractor: DateManageInteractor(
+            dateManageService: DateRepository.shared
+        )
+    )
+    
     DatePickerView()
         .environmentObject(NavigationPathObject())
         .environmentObject(viewModel)

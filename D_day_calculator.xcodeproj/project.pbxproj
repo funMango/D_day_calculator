@@ -33,8 +33,11 @@
 		5A8CC17B2D38C82200126C99 /* Exceptions for "D_day_calculator" folder in "D_day_calculatorTests" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				Interators/DateInteractor.swift,
+				Interators/DateCalcInterator.swift,
+				Interators/DateManageInteractor.swift,
+				Models/Mode.swift,
 				Models/NavigationPath.swift,
+				Models/TimeSpan.swift,
 				Presents/ViewModels/DateViewModel.swift,
 				Presents/Views/DatePickerView.swift,
 				Presents/Views/ModeSelectionView.swift,

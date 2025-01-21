@@ -9,7 +9,11 @@ import SwiftUI
 
 struct ModeSelectionView: View {
     @EnvironmentObject var navigationPath: NavigationPathObject
-    @StateObject var viewModel = DateViewModel()
+    @StateObject var viewModel = DateViewModel(
+        dateManageInteractor: DateManageInteractor(
+            dateManageService: DateRepository.shared
+        )
+    )
     @Environment(\.presentationMode) var presentationMode
     
     var body: some View {
@@ -43,7 +47,7 @@ struct ModeSelectionView: View {
                 DatePickerView()
                     .environmentObject(viewModel)
             }
-            .environmentObject(navigationPath)            
+            .environmentObject(navigationPath)
             .listStyle(.plain)
             .listRowSeparator(.hidden)
             .listRowSpacing(15)

@@ -14,6 +14,11 @@ class DateViewModel: ObservableObject {
     @Published var selectedDate = Date()
     @Published var calculatedDays = ""
     var calcInteractor: DateCalcProtocol?
+    var dateManageInteractor: DateManageProtocol
+    
+    init(dateManageInteractor: DateManageProtocol) {
+        self.dateManageInteractor = dateManageInteractor
+    }
     
     func set(mode: Mode, calcInteractor: DateCalcProtocol) {
         self.mode = mode
@@ -39,5 +44,24 @@ class DateViewModel: ObservableObject {
         } else {
             print("calcInteractor, mode binding error!")
         }
+    }
+    
+    func saveDate() {
+        let timeSpan = getTimeSpan()
+        dateManageInteractor.execute(action: .save, from: timeSpan)
+    }
+    
+    private func getTimeSpan() -> TimeSpan {
+        guard let mode = self.mode else {
+            fatalError("[Error]: mode가 선택되지 않았습니다.")
+        }
+        
+        return TimeSpan(
+            title: self.title,
+            startDate: self.selectedDate,
+            endDate: Date(),
+            mode: mode,
+            calculatedDays: self.calculatedDays
+        )
     }
 }

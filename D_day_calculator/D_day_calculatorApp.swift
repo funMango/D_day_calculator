@@ -6,12 +6,14 @@
 //
 
 import SwiftUI
+import SwiftData
 
 @main
 struct D_day_calculatorApp: App {
     var body: some Scene {
         WindowGroup {
             MainView()
+                // .modelContainer(for: [DayInfo.self])
         }
     }
 }
