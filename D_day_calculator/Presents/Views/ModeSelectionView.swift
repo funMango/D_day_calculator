@@ -7,25 +7,13 @@
 
 import SwiftUI
 
-enum Mode: String, CaseIterable, Hashable {
-    case dDay = "D-day"
-    case counting = "Counting"
-            
-    var content: String {
-        switch self {
-        case .dDay:
-            return "Choose D-Day from today"
-        case .counting:
-            return "Counting day from specified date"
-        }
-    }        
-}
-
 struct ModeSelectionView: View {
     @EnvironmentObject var navigationPath: NavigationPathObject
-    @EnvironmentObject var viewModel: DateViewModel
+    @StateObject var viewModel = DateViewModel()
+    @Environment(\.presentationMode) var presentationMode
     
     var body: some View {
+        VStack {
             VStack {
                 HStack {
                     TitleText(title: "Mode")
@@ -34,12 +22,18 @@ struct ModeSelectionView: View {
                 }
             }
             .padding()
-                        
+            
             List {
                 ForEach(Mode.allCases, id: \.self) { mode in
                     Button {
                         navigationPath.path.append(mode)
-                        viewModel.selectMode(from: mode)
+                        
+                        switch mode {
+                        case .dDay:
+                            viewModel.set(mode: mode, calcInteractor: DdayCalcInterator())
+                        case .counting:
+                            viewModel.set(mode: mode, calcInteractor: CountingCalcInterator())
+                        }
                     } label: {
                         ModeCell(mode: mode)
                     }
@@ -47,11 +41,25 @@ struct ModeSelectionView: View {
             }
             .navigationDestination(for: Mode.self) { mode in
                 DatePickerView()
+                    .environmentObject(viewModel)
             }
-            .environmentObject(navigationPath)
+            .environmentObject(navigationPath)            
             .listStyle(.plain)
             .listRowSeparator(.hidden)
             .listRowSpacing(15)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button {
+                        presentationMode.wrappedValue.dismiss()
+                    } label: {
+                        Image(systemName: "chevron.left")
+                            .foregroundStyle(.black)
+                            .fontWeight(.medium)
+                    }
+                }
+            }
+            .navigationBarBackButtonHidden(true)
+        }
     }
 }
 
@@ -79,17 +87,7 @@ struct ModeCell: View {
     }
 }
 
-struct TestView: View {
-    var mode: Mode
-    
-    var body: some View {
-        Text(mode.rawValue)
-    }
-}
-
-#Preview {    
-    let dateViewModel = DateViewModel(interactor: DateDiffInteractor())
+#Preview {
     ModeSelectionView()
-        .environmentObject(dateViewModel)
         .environmentObject(NavigationPathObject())
 }

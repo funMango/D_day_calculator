@@ -7,18 +7,19 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct DatePickerView: View {
     @EnvironmentObject var navigationPath: NavigationPathObject
     @EnvironmentObject var viewModel: DateViewModel
     @State private var showingSheet = false
     private var today = Date()
-                
+                                    
     var body: some View {
         VStack {
             HStack {
                 VStack(alignment: .leading) {
-                    Text("\(viewModel.totalDays)")
+                    Text("\(viewModel.calculatedDays)")
                         .font(.system(size: 35))
                         .fontWeight(.bold)
                         .foregroundColor(.black)
@@ -52,7 +53,7 @@ struct DatePickerView: View {
             
             VStack {
                 HStack {
-                    Text(viewModel.mode.rawValue)
+                    Text(viewModel.mode?.rawValue ?? Mode.dDay.rawValue)
                         .fontWeight(.regular)
                         .foregroundColor(.black)
                     
@@ -79,12 +80,7 @@ struct DatePickerView: View {
                     .background(Color.black)
             }
             .padding(.horizontal)
-            
-            
-            
-            
-            
-                                                
+                                                                                        
             Spacer()
             
             Button {
@@ -102,15 +98,11 @@ struct DatePickerView: View {
             }
             .padding()
         }
-        
-        .environmentObject(viewModel)
         .sheet(isPresented: $showingSheet) {
             DatePickerWheelView(selectedDate: $viewModel.selectedDate)
-                .presentationDetents([.fraction(0.45)])
-        }
-        .onChange(of: viewModel.selectedDate) {
-            viewModel.calcDateDiff()
-        }
+                .presentationDetents([.fraction(0.4)])
+                .environmentObject(viewModel)
+        }        
     }
 }
 
@@ -145,6 +137,7 @@ struct DatePickerWheelView: View {
         
         Button {
             self.presentationMode.wrappedValue.dismiss()
+            viewModel.calcDateDiff()
         } label: {
             Text("Select")
                 .font(.title3)
@@ -159,9 +152,9 @@ struct DatePickerWheelView: View {
     }
 }
 
-#Preview {    
-    let dateViewModel = DateViewModel(interactor: DateDiffInteractor())
+#Preview {
+    let viewModel = DateViewModel()
     DatePickerView()
-        .environmentObject(dateViewModel)
         .environmentObject(NavigationPathObject())
+        .environmentObject(viewModel)
 }

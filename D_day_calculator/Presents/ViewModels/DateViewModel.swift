@@ -6,42 +6,38 @@
 //
 
 import Foundation
+import SwiftData
 
 class DateViewModel: ObservableObject {
+    @Published var mode: Mode?
     @Published var title = ""
     @Published var selectedDate = Date()
-    @Published var totalDays = ""
-    @Published var mode = Mode.dDay
-    private var interactor: DateInteractor
+    @Published var calculatedDays = ""
+    var calcInteractor: DateCalcProtocol?
     
-    init(interactor: DateInteractor) {
-        self.interactor = interactor
-    }
-                
-    func selectMode(from mode: Mode) {
+    func set(mode: Mode, calcInteractor: DateCalcProtocol) {
         self.mode = mode
-        self.selectedDate = Date()
-        
-        switch mode {
-        case .dDay:
-            totalDays = "D-day"
-        case .counting:
-            totalDays = "1 days"
-        }
+        self.calcInteractor = calcInteractor
+        reset()        
     }
-                    
+    
+    private func reset() {
+        self.title = ""
+        self.selectedDate = Date()
+        self.calculatedDays = mode?.rawValue ?? ""
+    }
+            
     func calcDateDiff() {
-        let targetDate = selectedDate
-        let referenceDate = Date()
-        
-        let dateContext = DateContext(
-            targetDate: targetDate,
-            today: referenceDate,
-            mode: mode,
-            timeRegion: TimeRegion.seoul
-        )
-        
-        totalDays = interactor.execute(from: dateContext)
-                      
+        if let calcInteractor = calcInteractor, let mode = mode {
+            let dateContext = DateContext(
+                startDate: self.selectedDate,
+                endDate: Date(),
+                mode: mode
+            )
+            
+            calculatedDays = calcInteractor.execute(from: dateContext)
+        } else {
+            print("calcInteractor, mode binding error!")
+        }
     }
 }

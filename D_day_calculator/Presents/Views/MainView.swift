@@ -6,13 +6,13 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct MainView: View {
-    @StateObject private var viewModel = DateViewModel(interactor: DateDiffInteractor())
     @StateObject private var navigationPath = NavigationPathObject()
+    
     let dayInfoDummys = DayInfoDummy().dummys
-    
-    
+            
     var body: some View {
         NavigationStack(path: $navigationPath.path) {
             VStack {
@@ -56,9 +56,8 @@ struct MainView: View {
             .navigationDestination(for: DayInfo.self) { info in
                 DayDetailView(dayInfo: info)
             }
-        }
-        .environmentObject(viewModel)
-        .environmentObject(navigationPath)
+        }        
+        .environmentObject(navigationPath)        
     }
 }
 
@@ -78,9 +77,9 @@ struct MainCellView: View {
             Spacer()
             
             if dayInfo.mode == .dDay {
-                Text("D\(dayInfo.calcDateDiff())")
+                Text("D")
             } else {
-                Text("\(dayInfo.calcDateDiff()) day")
+                Text(" day")
             }
             
         }
@@ -92,7 +91,7 @@ struct DayDetailView: View {
     var body: some View {
         VStack {
             Text("Target Date: \(dayInfo.targetDate)")
-            Text("Date Diff: \(dayInfo.calcDateDiff())")
+            Text("Date Diff: ")
         }
         .navigationTitle("\(dayInfo.title)")
     }

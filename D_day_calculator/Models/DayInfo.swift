@@ -6,28 +6,28 @@
 //
 
 import Foundation
+import SwiftData
 
-struct DayInfo: Hashable {
+@Model
+class DayInfo: Hashable {
+    @Attribute(.unique) var id = UUID().uuidString
     var title: String
     var targetDate: Date
-    var mode: Mode
+    @Attribute var modeRaw: String
+    var mode: Mode {
+        get {
+            return Mode(rawValue: modeRaw) ?? .dDay // 기본값을 .dDay로 설정
+        }
+        set {
+            modeRaw = newValue.rawValue // Mode를 String으로 변환하여 저장
+        }
+    }
+    var result: String?
     
     init(title: String, targetDate: Date, mode: Mode) {
         self.title = title
         self.targetDate = targetDate
-        self.mode = mode
-    }
-    
-    func calcDateDiff() -> Int {
-        let today = Date()
-        let calendar = Calendar.current
-        let components = calendar.dateComponents(
-            [.day, .hour, .minute, .second],
-            from: targetDate,
-            to: today
-        )
-        
-        return components.day ?? 0
+        self.modeRaw = mode.rawValue
     }
     
     func getTargetDate() -> String {
