@@ -38,6 +38,7 @@
 				Models/Mode.swift,
 				Models/NavigationPath.swift,
 				Models/TimeSpan.swift,
+				Presents/ViewModels/DatesViewModels.swift,
 				Presents/ViewModels/DateViewModel.swift,
 				Presents/Views/DatePickerView.swift,
 				Presents/Views/ModeSelectionView.swift,

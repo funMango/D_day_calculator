@@ -23,13 +23,13 @@ class DateViewModel: ObservableObject {
     func set(mode: Mode, calcInteractor: DateCalcProtocol) {
         self.mode = mode
         self.calcInteractor = calcInteractor
-        reset()        
+        reset()
+        calcDateDiff()
     }
     
     private func reset() {
         self.title = ""
         self.selectedDate = Date()
-        self.calculatedDays = mode?.rawValue ?? ""
     }
             
     func calcDateDiff() {
@@ -48,7 +48,7 @@ class DateViewModel: ObservableObject {
     
     func saveDate() {
         let timeSpan = getTimeSpan()
-        dateManageInteractor.execute(action: .save, from: timeSpan)
+        dateManageInteractor.save(from: timeSpan)
     }
     
     private func getTimeSpan() -> TimeSpan {

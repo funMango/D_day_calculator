@@ -10,4 +10,8 @@ import SwiftUI
 
 class NavigationPathObject: ObservableObject {
     @Published var path = NavigationPath()
+    
+    func clear() {
+        path = NavigationPath()
+    }
 }

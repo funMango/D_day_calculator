@@ -7,18 +7,34 @@
 
 import Foundation
 import SwiftData
+import Combine
 
 protocol DateRepoProtocol {
-    func execute(action: DateAction, from timeSpan: TimeSpan)
+    var event: PassthroughSubject<Void, Never> { get }
+    func saveDate(from timeSpan: TimeSpan)
+    func fetchDate() -> [TimeSpan]
 }
 
 enum DateAction {
     case save
 }
 
+enum SortAction {
+    case createdAtDescending
+    case createdAtAscending
+}
+
+enum FilterAction {
+    case title
+    case startDate
+    case mode
+    case createdDate
+}
+
 class DateRepository: DateRepoProtocol {
     private let modelContainer: ModelContainer
     private let modelContext: ModelContext
+    var event = PassthroughSubject<Void, Never>()
     
     @MainActor
     static let shared = DateRepository()
@@ -35,24 +51,25 @@ class DateRepository: DateRepoProtocol {
             fatalError("Failed to initialize model container: \(error)")
         }
     }
-        
-    func execute(action: DateAction, from timeSpan: TimeSpan) {
-        switch action {
-        case .save:
-            saveDate(from: timeSpan)
+    
+    func saveDate(from timeSpan: TimeSpan) {
+        modelContext.insert(timeSpan)
+                
+        do {
+            try modelContext.save()
+            print("timeSpan 저장완료")
+            event.send()
+        } catch {
+            print("timeSpan 저장실패: \(error)")
         }
     }
     
-    private func saveDate(from timeSpan: TimeSpan) {
-        modelContext.insert(timeSpan)
-        
-        Task {
-            do {
-                try modelContext.save()
-                print("timeSpan 저장완료")
-            } catch {
-                print("timeSpan 저장실패: \(error)")
-            }
+    func fetchDate() -> [TimeSpan] {
+        do {
+            let descriptor = FetchDescriptor<TimeSpan>()
+            return try modelContext.fetch(descriptor)
+        } catch {
+            fatalError("[Error]: Failed to fetch timeSpans: \(error)")
         }
     }
 }

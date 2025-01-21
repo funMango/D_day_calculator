@@ -10,7 +10,12 @@ import SwiftData
 
 struct MainView: View {
     @StateObject private var navigationPath = NavigationPathObject()
-    
+    @StateObject private var viewModel = DatesViewModels(
+        dateManager: DateManageInteractor(
+            dateManageService: DateRepository.shared
+        )
+    )
+        
     let dayInfoDummys = DayInfoDummy().dummys
             
     var body: some View {
@@ -37,11 +42,11 @@ struct MainView: View {
                 
                 
                 List {
-                    ForEach(dayInfoDummys, id: \.self) { info in
+                    ForEach(viewModel.dates, id: \.self) { timeSpan in
                         Button {
-                            navigationPath.path.append(info)
+                            navigationPath.path.append(timeSpan)
                         } label: {
-                            MainCellView(dayInfo: info)
+                            MainCellView(timeSpan: timeSpan)
                         }
                     }
                 }
@@ -53,8 +58,8 @@ struct MainView: View {
                     ModeSelectionView()
                 }
             }
-            .navigationDestination(for: DayInfo.self) { info in
-                DayDetailView(dayInfo: info)
+            .navigationDestination(for: TimeSpan.self) { timeSpan in
+                DayDetailView(timeSpan: timeSpan)
             }
         }        
         .environmentObject(navigationPath)        
@@ -62,38 +67,33 @@ struct MainView: View {
 }
 
 struct MainCellView: View {
-    var dayInfo: DayInfo
+    var timeSpan: TimeSpan
     
     var body: some View {
         HStack {
             VStack(alignment: .leading) {
-                Text(dayInfo.title)
+                Text(timeSpan.title)
                     .font(.headline)
-                Text(dayInfo.targetDate.formatted(DateFormat.USA.rawValue))
+                Text(timeSpan.startDate.formatted(DateFormat.USA.rawValue))
                     .font(.caption)
                     .foregroundStyle(Color.gray)
             }
             
             Spacer()
             
-            if dayInfo.mode == .dDay {
-                Text("D")
-            } else {
-                Text(" day")
-            }
-            
+            Text("\(timeSpan.calculatedDays)")
         }
     }
 }
 
 struct DayDetailView: View {
-    var dayInfo: DayInfo
+    var timeSpan: TimeSpan
     var body: some View {
         VStack {
-            Text("Target Date: \(dayInfo.targetDate)")
-            Text("Date Diff: ")
+            Text("\(timeSpan.calculatedDays)")
+            Text("\(timeSpan.startDate.formatted(DateFormat.USA.rawValue))")
         }
-        .navigationTitle("\(dayInfo.title)")
+        .navigationTitle("\(timeSpan.title)")
     }
 }
 

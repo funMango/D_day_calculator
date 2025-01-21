@@ -3,7 +3,6 @@
 //  D_day_calculator
 //
 //  Created by 이민호 on 1/13/25.
-
 //
 
 import SwiftUI
@@ -84,6 +83,7 @@ struct DatePickerView: View {
             Spacer()
             
             Button {
+                navigationPath.clear()
                 viewModel.saveDate()
             } label: {
                 Text("Complete")

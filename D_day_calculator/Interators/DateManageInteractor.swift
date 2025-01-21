@@ -6,20 +6,37 @@
 //
 
 import Foundation
+import Combine
 
 protocol DateManageProtocol {
-    func execute(action: DateAction, from timeSpan: TimeSpan)
+    var event: PassthroughSubject<Void, Never> { get }
+    func save(from timeSpan: TimeSpan)
+    func fetch() -> [TimeSpan]
 }
-
 
 class DateManageInteractor: DateManageProtocol{
     private let dateRepository: DateRepoProtocol
+    private var cancellables = Set<AnyCancellable>()
+    var event = PassthroughSubject<Void, Never>()
     
     init(dateManageService: DateRepoProtocol) {
         self.dateRepository = dateManageService
+        observeRepoChange()
     }
-        
-    func execute(action: DateAction, from timeSpan: TimeSpan) {
-        dateRepository.execute(action: action, from: timeSpan)
+    
+    func save(from timeSpan: TimeSpan) {
+        dateRepository.saveDate(from: timeSpan)                      
+    }
+               
+    func fetch() -> [TimeSpan] {
+        return dateRepository.fetchDate()
+    }
+    
+    private func observeRepoChange() {
+        dateRepository.event
+            .sink { [weak self] in                
+                self?.event.send()
+            }
+            .store(in: &cancellables)
     }
 }
