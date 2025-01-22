@@ -13,6 +13,7 @@ protocol DateRepoProtocol {
     var event: PassthroughSubject<Void, Never> { get }
     func saveDate(from timeSpan: TimeSpan)
     func fetchDate() -> [TimeSpan]
+    func deleteDate(from timeSpan: TimeSpan)
 }
 
 enum DateAction {
@@ -57,10 +58,22 @@ class DateRepository: DateRepoProtocol {
                 
         do {
             try modelContext.save()
-            print("timeSpan 저장완료")
+            print("timeSpan 저장완료 (id: \(timeSpan.id), title: \(timeSpan.title)")
             event.send()
         } catch {
             print("timeSpan 저장실패: \(error)")
+        }
+    }
+    
+    func deleteDate(from timeSpan: TimeSpan) {
+        self.modelContext.delete(timeSpan)
+        
+        do {
+            try modelContext.save()
+            print("timeSpan 삭제완료 (id: \(timeSpan.id), title: \(timeSpan.title)")
+            event.send()
+        } catch {
+            print("timeSpan 삭제실패")
         }
     }
     

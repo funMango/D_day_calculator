@@ -49,8 +49,10 @@ struct MainView: View {
                             MainCellView(timeSpan: timeSpan)
                         }
                     }
+                    .onDelete(perform: viewModel.deleteDate)
                 }
                 .listStyle(.plain)
+                
             }
             
             .navigationDestination(for: String.self) { string in

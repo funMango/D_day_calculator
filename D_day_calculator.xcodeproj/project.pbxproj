@@ -43,7 +43,7 @@
 				Presents/Views/DatePickerView.swift,
 				Presents/Views/ModeSelectionView.swift,
 				UI/Element/TitleText.swift,
-				Utilities/Convertor.swift,
+				Utilities/DateExtension.swift,
 			);
 			target = 5ADC1B412D33931F0075DA3B /* D_day_calculatorTests */;
 		};

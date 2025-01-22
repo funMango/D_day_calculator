@@ -12,6 +12,7 @@ protocol DateManageProtocol {
     var event: PassthroughSubject<Void, Never> { get }
     func save(from timeSpan: TimeSpan)
     func fetch() -> [TimeSpan]
+    func delete(from timeSpan: TimeSpan)
 }
 
 class DateManageInteractor: DateManageProtocol{
@@ -30,6 +31,10 @@ class DateManageInteractor: DateManageProtocol{
                
     func fetch() -> [TimeSpan] {
         return dateRepository.fetchDate()
+    }
+    
+    func delete(from timeSpan: TimeSpan) {
+        dateRepository.deleteDate(from: timeSpan)
     }
     
     private func observeRepoChange() {

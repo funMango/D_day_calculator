@@ -29,8 +29,4 @@ class DayInfo: Hashable {
         self.targetDate = targetDate
         self.modeRaw = mode.rawValue
     }
-    
-    func getTargetDate() -> String {
-        return Convertor.convertToDate(date: targetDate, format: "yyyy.MM.dd")
-    }
 }

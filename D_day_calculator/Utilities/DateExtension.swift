@@ -7,14 +7,6 @@
 
 import Foundation
 
-struct Convertor {
-    static func convertToDate(date: Date, format: String = "yyyy.MM.dd") -> String {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = format
-        return dateFormatter.string(from: date)
-    }
-}
-
 enum DateFormat: String {
     case USA = "MMM d, yyyy"
 }
