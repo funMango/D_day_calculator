@@ -38,9 +38,6 @@ struct MainView: View {
                     .onDelete(perform: viewModel.deleteDate)
                 }
                 .listStyle(.plain)
-                
-               
-                
             }
             .navigationTitle("List")
             .toolbar {
@@ -69,6 +66,7 @@ struct MainView: View {
     }
 }
 
+// MARK: - ListCell
 struct MainCellView: View {
     var timeSpan: TimeSpan
     
@@ -77,7 +75,8 @@ struct MainCellView: View {
             VStack(alignment: .leading) {
                 Text(timeSpan.title)
                     .font(.headline)
-                Text(timeSpan.startDate.formatted(DateFormat.USA.rawValue))
+                    .padding(.bottom, 1)
+                Text("\(timeSpan.mode.dateReference): \(timeSpan.startDate.formatted(DateFormat.USA.rawValue))")
                     .font(.caption)
                     .foregroundStyle(Color.gray)
             }
@@ -85,10 +84,12 @@ struct MainCellView: View {
             Spacer()
             
             Text("\(timeSpan.calculatedDays)")
+                .font(.headline)
         }
     }
 }
 
+// MARK: - Detail Page (temporary)
 struct DayDetailView: View {
     var timeSpan: TimeSpan
     var body: some View {

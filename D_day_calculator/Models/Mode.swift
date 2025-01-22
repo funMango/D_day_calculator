@@ -20,4 +20,13 @@ enum Mode: String, CaseIterable, Hashable, Codable {
             return "Counting day from specified date"
         }
     }
+    
+    var dateReference: String {
+        switch self {
+        case .dDay:
+            return "Until"
+        case .counting:
+            return "From"
+        }
+    }
 }

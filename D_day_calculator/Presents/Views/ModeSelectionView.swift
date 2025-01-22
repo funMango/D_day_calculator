@@ -18,15 +18,6 @@ struct ModeSelectionView: View {
     
     var body: some View {
         VStack {
-            VStack {
-                HStack {
-                    TitleText(title: "Mode")
-                    
-                    Spacer()
-                }
-            }
-            .padding()
-            
             List {
                 ForEach(Mode.allCases, id: \.self) { mode in
                     Button {
@@ -41,8 +32,11 @@ struct ModeSelectionView: View {
                     } label: {
                         ModeCell(mode: mode)
                     }
+                    .listRowSeparator(.hidden)
                 }
             }
+            .navigationTitle("Mode")
+            .navigationBarTitleDisplayMode(.inline)
             .navigationDestination(for: Mode.self) { mode in
                 DatePickerView()
                     .environmentObject(viewModel)
@@ -53,13 +47,7 @@ struct ModeSelectionView: View {
             .listRowSpacing(15)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Button {
-                        presentationMode.wrappedValue.dismiss()
-                    } label: {
-                        Image(systemName: "chevron.left")
-                            .foregroundStyle(.black)
-                            .fontWeight(.medium)
-                    }
+                    NavigationBackBtn()
                 }
             }
             .navigationBarBackButtonHidden(true)
@@ -71,23 +59,27 @@ struct ModeCell: View {
     var mode: Mode
     
     var body: some View {
-        HStack {
-            VStack(alignment: .leading) {
-                Text("\(mode.rawValue)")
-                    .font(.title)
-                    .fontWeight(.semibold)
-                    .padding(.bottom, 5)
-                Text("\(mode.content)")
-                    .foregroundStyle(.gray)
+        VStack {
+            HStack {
+                VStack(alignment: .leading) {
+                    Text("\(mode.rawValue)")
+                        .font(.title)
+                        .fontWeight(.semibold)
+                        .padding(.bottom, 5)
+                    Text("\(mode.content)")
+                        .foregroundStyle(.gray)
+                }
+                .padding(.vertical)
+                
+                Spacer()
+                
+                Image(systemName: "chevron.right")
+                    .font(.system(size: 20, weight: .medium))
             }
-            .padding(.vertical)
             
-            Spacer()
-            
-            Image(systemName: "chevron.right")
-                .font(.system(size: 20, weight: .medium))                
+            Divider()
+                .background(Color.black)
         }
-        
     }
 }
 

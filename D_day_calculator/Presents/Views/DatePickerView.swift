@@ -11,73 +11,22 @@ import SwiftData
 struct DatePickerView: View {
     @EnvironmentObject var navigationPath: NavigationPathObject
     @EnvironmentObject var viewModel: DateViewModel
+    @Environment(\.presentationMode) var presentationMode
     @State private var showingSheet = false
     private var today = Date()
                                     
     var body: some View {
         VStack {
-            HStack {
-                VStack(alignment: .leading) {
-                    Text("\(viewModel.calculatedDays)")
-                        .font(.system(size: 35))
-                        .fontWeight(.bold)
-                        .foregroundColor(.black)
-                        .padding(.bottom, -25)
-                        
-                    Text("\nfrom \(today.formatted(DateFormat.USA.rawValue))")
-                        .font(.system(size: 20))
-                        .fontWeight(.medium)
-                        .foregroundColor(.black)
-                }
-                
-                Spacer()
-            }
+            CalculatedDaysView()
             .padding()
             .padding(.bottom, 30)
             .frame(maxWidth: .infinity)
-            
-            
-            VStack {
-                TextField("Title", text: $viewModel.title)
-                    
-                    .onAppear {
-                        UITextField.appearance().clearButtonMode = .whileEditing
-                    }
-                
-                Divider()
-                    .background(Color.black)
-            }
+                        
+            LineTextField(text: $viewModel.title, title: "Title")
             .padding(.horizontal)
             .padding(.bottom, 10)
             
-            VStack {
-                HStack {
-                    Text(viewModel.mode?.rawValue ?? Mode.dDay.rawValue)
-                        .fontWeight(.regular)
-                        .foregroundColor(.black)
-                    
-                    Spacer()
-                    
-                    Button {
-                        self.showingSheet.toggle()
-                    } label: {
-                        HStack {
-                            Text("\(viewModel.selectedDate.formatted(DateFormat.USA.rawValue))")
-                                .fontWeight(.semibold)
-                                .foregroundStyle(.black)
-                                
-                            Image(systemName: "chevron.down")
-                                .resizable()
-                                .fontWeight(.semibold)
-                                .frame(width: 10, height: 7)
-                                .foregroundStyle(.black)
-                        }
-                    }
-                }
-                
-                Divider()
-                    .background(Color.black)
-            }
+            DateSelectView(showingSheet: $showingSheet)
             .padding(.horizontal)
                                                                                         
             Spacer()
@@ -86,26 +35,97 @@ struct DatePickerView: View {
                 navigationPath.clear()
                 viewModel.saveDate()
             } label: {
-                Text("Complete")
-                    .foregroundStyle(.white)
-                    .font(.system(.title3))
-                    .fontWeight(.semibold)
-                    .padding()
-                    .frame(maxWidth: .infinity)
-                    .frame(height: 50)
-                    .background(Color.black)
-                    .cornerRadius(10)
+                SaveBtn(text: "Save")
             }
             .padding()
         }
+        .navigationTitle("Date")
+        .navigationBarTitleDisplayMode(.inline)
+        .environmentObject(viewModel)
         .sheet(isPresented: $showingSheet) {
             DatePickerWheelView(selectedDate: $viewModel.selectedDate)
                 .presentationDetents([.fraction(0.4)])
                 .environmentObject(viewModel)
-        }        
+        }
+        .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                NavigationBackBtn()
+            }
+        }
+        .navigationBarBackButtonHidden(true)
     }
 }
 
+// MARK: - CalculatedDaysView
+
+struct CalculatedDaysView: View {
+    @EnvironmentObject var viewModel: DateViewModel
+    private let today = Date()
+    
+    var body: some View {
+        HStack {
+            VStack(alignment: .leading) {
+                Text("\(viewModel.calculatedDays)")
+                    .font(.system(size: 35))
+                    .fontWeight(.bold)
+                    .foregroundColor(.black)
+                    .padding(.bottom, -25)
+                    
+                Text("\nfrom \(today.formatted(DateFormat.USA.rawValue))")
+                    .font(.system(size: 20))
+                    .fontWeight(.medium)
+                    .foregroundColor(.black)
+            }
+            
+            Spacer()
+        }
+    }
+}
+
+
+
+
+// MARK: - DateSelectView
+
+struct DateSelectView: View {
+    @EnvironmentObject var viewModel: DateViewModel
+    @Binding var showingSheet: Bool
+    
+    var body: some View {
+        VStack {
+            HStack {
+                Text(viewModel.mode?.dateReference ?? Mode.dDay.dateReference)
+                    .fontWeight(.regular)
+                    .foregroundColor(.black)
+                
+                Spacer()
+                
+                Button {
+                    self.showingSheet.toggle()
+                } label: {
+                    HStack {
+                        Text("\(viewModel.selectedDate.formatted(DateFormat.USA.rawValue))")
+                            .fontWeight(.semibold)
+                            .foregroundStyle(.black)
+                            
+                        Image(systemName: "chevron.down")
+                            .resizable()
+                            .fontWeight(.semibold)
+                            .frame(width: 10, height: 7)
+                            .foregroundStyle(.black)
+                    }
+                }
+            }
+            
+            Divider()
+                .background(Color.black)
+        }
+    }
+}
+
+
+
+// MARK: - DatePickerWheelView
 struct DatePickerWheelView: View {
     @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject var viewModel: DateViewModel
