@@ -15,34 +15,20 @@ struct MainView: View {
             dateManageService: DateRepository.shared
         )
     )
-        
+    
+    @State private var searchText = ""
+    var filteredDates: [TimeSpan] {
+        guard !searchText.isEmpty else { return viewModel.dates }
+        return viewModel.dates.filter { $0.title.contains(searchText)}
+    }
+            
     let dayInfoDummys = DayInfoDummy().dummys
             
     var body: some View {
         NavigationStack(path: $navigationPath.path) {
             VStack {
-                HStack {
-                    HStack {
-                        TitleText(title: "List")
-                        
-                        Spacer()
-                    }
-                    
-                    
-                    Button {
-                        navigationPath.path.append("ModeSelectionView")
-                    } label: {
-                        Image(systemName: "plus.circle.fill")
-                            .resizable()
-                            .frame(width: 30, height: 30)                            
-                            .foregroundStyle(.red)
-                    }
-                }
-                .padding()
-                
-                
                 List {
-                    ForEach(viewModel.dates, id: \.self) { timeSpan in
+                    ForEach(filteredDates, id: \.self) { timeSpan in
                         Button {
                             navigationPath.path.append(timeSpan)
                         } label: {
@@ -53,8 +39,22 @@ struct MainView: View {
                 }
                 .listStyle(.plain)
                 
+               
+                
             }
-            
+            .navigationTitle("List")
+            .toolbar {
+                ToolbarItem(placement: .confirmationAction) {
+                    Button {
+                        navigationPath.path.append("ModeSelectionView")
+                    } label: {
+                        Image(systemName: "plus.circle")
+                            .resizable()
+                            .frame(width: 30, height: 30)
+                            .foregroundStyle(.red)
+                    }
+                }
+            }
             .navigationDestination(for: String.self) { string in
                 if string == "ModeSelectionView" {
                     ModeSelectionView()
@@ -63,8 +63,9 @@ struct MainView: View {
             .navigationDestination(for: TimeSpan.self) { timeSpan in
                 DayDetailView(timeSpan: timeSpan)
             }
-        }        
-        .environmentObject(navigationPath)        
+        }
+        .searchable(text: $searchText)
+        .environmentObject(navigationPath)
     }
 }
 
