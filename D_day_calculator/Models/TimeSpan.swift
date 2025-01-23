@@ -9,8 +9,8 @@ import Foundation
 import SwiftData
 
 @Model
-class TimeSpan {
-    @Attribute(.unique) var id = UUID().uuidString
+class TimeSpan: Equatable {
+    @Attribute(.unique) var id: String
     var createdDate = Date()
     var title: String
     var startDate: Date
@@ -18,7 +18,8 @@ class TimeSpan {
     var mode: Mode
     var calculatedDays: String
     
-    init(title: String, startDate: Date, endDate: Date, mode: Mode, calculatedDays: String) {
+    init(id: String = UUID().uuidString, title: String, startDate: Date, endDate: Date, mode: Mode, calculatedDays: String) {
+        self.id = id
         self.title = title
         self.startDate = startDate
         self.endDate = endDate

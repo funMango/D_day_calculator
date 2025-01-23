@@ -16,22 +16,6 @@ protocol DateRepoProtocol {
     func deleteDate(from timeSpan: TimeSpan)
 }
 
-enum DateAction {
-    case save
-}
-
-enum SortAction {
-    case createdAtDescending
-    case createdAtAscending
-}
-
-enum FilterAction {
-    case title
-    case startDate
-    case mode
-    case createdDate
-}
-
 class DateRepository: DateRepoProtocol {
     private let modelContainer: ModelContainer
     private let modelContext: ModelContext
@@ -49,7 +33,7 @@ class DateRepository: DateRepoProtocol {
             )
             self.modelContext = modelContainer.mainContext
         } catch {
-            fatalError("Failed to initialize model container: \(error)")
+            fatalError("[Error] container 시작 실패: \(error)")
         }
     }
     
@@ -61,20 +45,30 @@ class DateRepository: DateRepoProtocol {
             print("timeSpan 저장완료 (id: \(timeSpan.id), title: \(timeSpan.title)")
             event.send()
         } catch {
-            print("timeSpan 저장실패: \(error)")
+            print("[Error] timeSpan 저장실패: \(error)")
         }
     }
     
     func deleteDate(from timeSpan: TimeSpan) {
-        self.modelContext.delete(timeSpan)
-        
         do {
-            try modelContext.save()
-            print("timeSpan 삭제완료 (id: \(timeSpan.id), title: \(timeSpan.title)")
-            event.send()
+            let fetchedTimeSpans = fetchDate()
+            
+            if let timeSpanToDelete = fetchedTimeSpans.first(where: { $0.id == timeSpan.id }) {
+                modelContext.delete(timeSpanToDelete)
+                try modelContext.save()
+                event.send()
+                print("timeSpan 삭제완료 (id: \(timeSpan.id), title: \(timeSpan.title)")
+            } else {
+                print("[Error] 해당 timeSpan을 찾을 수 없습니다 (id: \(timeSpan.id), title: \(timeSpan.title)")
+            }
         } catch {
-            print("timeSpan 삭제실패")
+            print("[Error] timeSpan 삭제실패: \(error)")
         }
+    }
+    
+    func updateDate(from timeSpan: TimeSpan) {
+        deleteDate(from: timeSpan)
+        saveDate(from: timeSpan)
     }
     
     func fetchDate() -> [TimeSpan] {
@@ -82,7 +76,7 @@ class DateRepository: DateRepoProtocol {
             let descriptor = FetchDescriptor<TimeSpan>()
             return try modelContext.fetch(descriptor)
         } catch {
-            fatalError("[Error]: Failed to fetch timeSpans: \(error)")
+            fatalError("[Error] timeSpan배열 fetch 실패: \(error)")
         }
     }
 }
