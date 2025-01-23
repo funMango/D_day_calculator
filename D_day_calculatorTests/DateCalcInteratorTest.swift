@@ -39,6 +39,9 @@ final class DateDiffInteractorTest: XCTestCase {
         ]
         
         for testCase in testCases {
+            let dDayCalcInterator = DdayCalcInterator()
+            let countingCalcInterator = CountingCalcInterator()
+            
             guard
                 let targetDate = calendar.date(from: testCase.targetDate),
                 let today = calendar.date(from: testCase.today)
@@ -52,9 +55,15 @@ final class DateDiffInteractorTest: XCTestCase {
                 endDate: today,
                 mode: testCase.mode
             )
-                        
-            let result = DateCalculator.execute(from: dateContext)
-            XCTAssertEqual(result, testCase.expected, "Fail: \(testCase)")
+            
+            switch dateContext.mode {
+                case .dDay:
+                    let result = dDayCalcInterator.execute(from: dateContext)
+                    XCTAssertEqual(result, testCase.expected, "Fail: \(testCase)")
+                case .counting:
+                    let result = countingCalcInterator.execute(from: dateContext)
+                    XCTAssertEqual(result, testCase.expected, "Fail: \(testCase)")
+            }                                    
         }
     }
 }
