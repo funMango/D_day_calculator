@@ -36,14 +36,18 @@
 				Interators/DateCalcInterator.swift,
 				Interators/DateManageInteractor.swift,
 				Models/Mode.swift,
-				Models/NavigationPath.swift,
 				Models/TimeSpan.swift,
 				Presents/ViewModels/DatesViewModels.swift,
 				Presents/ViewModels/DateViewModel.swift,
+				Presents/Views/DateDetailView.swift,
 				Presents/Views/DatePickerView.swift,
 				Presents/Views/ModeSelectionView.swift,
-				UI/Element/LineTextField.swift,
+				Repository/DateRepository.swift,
+				UI/LineTextField.swift,
+				UI/NavigationBackBtn.swift,
+				UI/SaveBtn.swift,
 				Utilities/DateExtension.swift,
+				Utilities/NavigationPath.swift,
 			);
 			target = 5ADC1B412D33931F0075DA3B /* D_day_calculatorTests */;
 		};

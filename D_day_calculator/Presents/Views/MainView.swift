@@ -22,8 +22,6 @@ struct MainView: View {
         return viewModel.dates.filter { $0.title.contains(searchText)}
     }
             
-    let dayInfoDummys = DayInfoDummy().dummys
-            
     var body: some View {
         NavigationStack(path: $navigationPath.path) {
             VStack {
@@ -39,7 +37,6 @@ struct MainView: View {
                 }
                 .listStyle(.plain)
             }
-            .navigationTitle("List")
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
                     Button {
@@ -51,14 +48,37 @@ struct MainView: View {
                             .foregroundStyle(.red)
                     }
                 }
+                
+                ToolbarItem(placement: .topBarLeading) {
+                    Text("List")
+                        .font(.largeTitle)
+                        .fontWeight(.bold)
+                }
             }
             .navigationDestination(for: String.self) { string in
                 if string == "ModeSelectionView" {
                     ModeSelectionView()
                 }
             }
-            .navigationDestination(for: TimeSpan.self) { timeSpan in
-                DayDetailView(timeSpan: timeSpan)
+            .navigationDestination(for: TimeSpan.self) { timeSpan in                
+                switch timeSpan.mode {
+                case .dDay:
+                    DateDetailView(viewModel: DateViewModel(
+                            dateManageInteractor: DateManageInteractor(
+                                dateManageService: DateRepository.shared),
+                            dateCalcInteractor: DdayCalcInterator(),
+                            timeSpan: timeSpan
+                        )
+                    )
+                case .counting:
+                    DateDetailView(viewModel: DateViewModel(
+                            dateManageInteractor: DateManageInteractor(
+                                dateManageService: DateRepository.shared),
+                            dateCalcInteractor: CountingCalcInterator(),
+                            timeSpan: timeSpan
+                        )
+                    )
+                }
             }
         }
         .searchable(text: $searchText)

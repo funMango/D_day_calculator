@@ -57,7 +57,7 @@ class DateRepository: DateRepoProtocol {
                 modelContext.delete(timeSpanToDelete)
                 try modelContext.save()
                 event.send()
-                print("timeSpan 삭제완료 (id: \(timeSpan.id), title: \(timeSpan.title)")
+                print("timeSpan 삭제완료 (id: \(timeSpan.id), title: \(timeSpan.title))")
             } else {
                 print("[Error] 해당 timeSpan을 찾을 수 없습니다 (id: \(timeSpan.id), title: \(timeSpan.title)")
             }
