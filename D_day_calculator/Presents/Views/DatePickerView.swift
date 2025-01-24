@@ -10,11 +10,10 @@ import SwiftData
 
 struct DatePickerView: View {
     @EnvironmentObject var navigationPath: NavigationPathObject
-    @EnvironmentObject var viewModel: DateViewModel
+    @StateObject var viewModel: DateViewModel        
     @Environment(\.presentationMode) var presentationMode
-    @State private var showingSheet = false
-    private var today = Date()
-                                    
+    @State var showingSheet = false
+                                            
     var body: some View {
         VStack {
             CalculatedDaysView()
@@ -175,11 +174,12 @@ struct DatePickerWheelView: View {
 #Preview {
     let viewModel = DateViewModel(
         dateManageInteractor: DateManageInteractor(
-            dateManageService: DateRepository.shared
-        )
+            dateManageService: DateRepository.shared),
+        dateCalcInteractor: CountingCalcInterator(),
+        mode: .dDay
     )
     
-    DatePickerView()
+    DatePickerView(viewModel: viewModel)
         .environmentObject(NavigationPathObject())
         .environmentObject(viewModel)
 }

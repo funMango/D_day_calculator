@@ -9,11 +9,6 @@ import SwiftUI
 
 struct ModeSelectionView: View {
     @EnvironmentObject var navigationPath: NavigationPathObject
-    @StateObject var viewModel = DateViewModel(
-        dateManageInteractor: DateManageInteractor(
-            dateManageService: DateRepository.shared
-        )
-    )
     @Environment(\.presentationMode) var presentationMode
     
     var body: some View {
@@ -22,15 +17,8 @@ struct ModeSelectionView: View {
                 ForEach(Mode.allCases, id: \.self) { mode in
                     Button {
                         navigationPath.path.append(mode)
-                        
-                        switch mode {
-                        case .dDay:
-                            viewModel.set(mode: mode, calcInteractor: DdayCalcInterator())
-                        case .counting:
-                            viewModel.set(mode: mode, calcInteractor: CountingCalcInterator())
-                        }
                     } label: {
-                        ModeCell(mode: mode)
+                        ModeCellView(mode: mode)
                     }
                     .listRowSeparator(.hidden)
                 }
@@ -38,8 +26,24 @@ struct ModeSelectionView: View {
             .navigationTitle("Mode")
             .navigationBarTitleDisplayMode(.inline)
             .navigationDestination(for: Mode.self) { mode in
-                DatePickerView()
-                    .environmentObject(viewModel)
+                switch mode {
+                case .dDay:
+                    DatePickerView(viewModel: DateViewModel(
+                            dateManageInteractor: DateManageInteractor(
+                                dateManageService: DateRepository.shared),
+                            dateCalcInteractor: DdayCalcInterator(),
+                            mode: mode
+                        )
+                    )
+                case .counting:
+                    DatePickerView(viewModel: DateViewModel(
+                            dateManageInteractor: DateManageInteractor(
+                                dateManageService: DateRepository.shared),
+                            dateCalcInteractor: CountingCalcInterator(),
+                            mode: mode
+                        )
+                    )
+                }
             }
             .environmentObject(navigationPath)
             .listStyle(.plain)
@@ -55,7 +59,9 @@ struct ModeSelectionView: View {
     }
 }
 
-struct ModeCell: View {
+// MARK: - ModeCellView
+
+struct ModeCellView: View {
     var mode: Mode
     
     var body: some View {
