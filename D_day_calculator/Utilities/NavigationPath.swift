@@ -11,6 +11,7 @@ import SwiftUI
 enum NavigationTarget: Hashable {
     case modeSelection
     case datePicker(viewModel: DateViewModel, type: DatePickerViewType)
+    case dateDetail(viewModel: DateViewModel)
     
     func hash(into hasher: inout Hasher) {
         switch self {
@@ -19,6 +20,8 @@ enum NavigationTarget: Hashable {
         case .datePicker(let viewModel, let type):
             hasher.combine(viewModel.id)
             hasher.combine(type)
+        case .dateDetail(let viewModel):
+            hasher.combine(viewModel.id)
         }
     }
 
@@ -27,7 +30,9 @@ enum NavigationTarget: Hashable {
         case (.modeSelection, .modeSelection):
             return true
         case (.datePicker(let lhsViewModel, let lhsType), .datePicker(let rhsViewModel, let rhsType)):
-            return lhsViewModel.id == rhsViewModel.id && lhsType == rhsType
+            return lhsViewModel.id == rhsViewModel.id && lhsType == rhsType            
+        case (.dateDetail(let lhsViewModel), .dateDetail(let rhsViewModel)):
+            return lhsViewModel.id == rhsViewModel.id
         default:
             return false
         }

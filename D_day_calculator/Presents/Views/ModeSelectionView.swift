@@ -16,12 +16,10 @@ struct ModeSelectionView: View {
         VStack {
             List {
                 ForEach(Mode.allCases, id: \.self) { mode in
-                    Button {
-                        let viewModel = vmContainer.getDateViewModel(mode: mode)
-                        
+                    Button {                        
                         navigationPath.path.append(
                             NavigationTarget.datePicker(
-                                viewModel: viewModel,
+                                viewModel: vmContainer.getDateViewModel(mode: mode),
                                 type: .create
                             )
                         )

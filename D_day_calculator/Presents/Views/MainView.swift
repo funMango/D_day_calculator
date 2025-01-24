@@ -25,7 +25,14 @@ struct MainView: View {
                 List {
                     ForEach(filteredDates, id: \.self) { timeSpan in
                         Button {
-                            navigationPath.path.append(timeSpan)
+                            navigationPath.path.append(
+                                NavigationTarget.dateDetail(viewModel:
+                                    vmContainer.getDateViewModel(
+                                        mode: timeSpan.mode,
+                                        timeSpan: timeSpan
+                                    )
+                                )
+                            )
                         } label: {
                             MainCellView(timeSpan: timeSpan)
                         }
@@ -34,6 +41,7 @@ struct MainView: View {
                 }
                 .listStyle(.plain)
             }
+            .searchable(text: $searchText)
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
                     Button {
@@ -58,20 +66,13 @@ struct MainView: View {
                     ModeSelectionView()
                 case .datePicker(let viewModel, let type):
                     DatePickerView(viewModel: viewModel, type: type)
+                case .dateDetail(let viewModel):
+                    DateDetailView(viewModel: viewModel)
                 }
             }
-            .navigationDestination(for: TimeSpan.self) { timeSpan in
-                let viewModel = vmContainer.getDateViewModel(
-                    mode: timeSpan.mode,
-                    timeSpan: timeSpan
-                )
-                DateDetailView(viewModel: viewModel)
-            }
         }
-        .searchable(text: $searchText)
         .environmentObject(navigationPath)
         .environmentObject(vmContainer)
-        
     }
 }
 
@@ -97,20 +98,6 @@ struct MainCellView: View {
         }
     }
 }
-
-// MARK: - Detail Page (temporary)
-struct DayDetailView: View {
-    var timeSpan: TimeSpan
-    var body: some View {
-        VStack {
-            Text("\(timeSpan.calculatedDays)")
-            Text("\(timeSpan.startDate.formatted(DateFormat.USA.rawValue))")
-        }
-        .navigationTitle("\(timeSpan.title)")
-    }
-}
-
-
 
 #Preview {
     let viewModelContainer = ViewModelContainer(dateRepository: DateRepository.shared)

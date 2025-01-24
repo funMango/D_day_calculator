@@ -14,7 +14,7 @@ enum DatePickerViewType {
 }
 
 struct DatePickerView: View {
-    @EnvironmentObject var navigationPath: NavigationPathObject    
+    @EnvironmentObject var navigationPath: NavigationPathObject
     @StateObject var viewModel: DateViewModel
     @Environment(\.presentationMode) var presentationMode
     @State var showingSheet = false
@@ -93,9 +93,6 @@ struct CalculatedDaysView: View {
         }
     }
 }
-
-
-
 
 // MARK: - DateSelectView
 

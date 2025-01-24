@@ -14,7 +14,7 @@ struct D_day_calculatorApp: App {
     @StateObject var vmContainer = ViewModelContainer(dateRepository: DateRepository.shared)
     
     var body: some Scene {        
-        WindowGroup {
+        WindowGroup {            
             MainView(viewModel: vmContainer.getDatesViewModel())
                 .environmentObject(navigationPath)
                 .environmentObject(vmContainer)
