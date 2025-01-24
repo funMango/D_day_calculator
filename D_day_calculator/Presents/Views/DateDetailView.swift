@@ -10,6 +10,7 @@ import SwiftUI
 struct DateDetailView: View {
     @EnvironmentObject var navigationPath: NavigationPathObject
     @StateObject var viewModel: DateViewModel
+    @State var showingComfirm = false
     
     var body: some View {
         VStack {
@@ -30,7 +31,6 @@ struct DateDetailView: View {
             
             Spacer()
             Spacer()
-            
         }
         .padding()
         .navigationTitle("Date Detail")
@@ -51,7 +51,7 @@ struct DateDetailView: View {
             
             ToolbarItem(placement: .bottomBar) {
                 Button {
-                    
+                    showingComfirm.toggle()
                 } label: {
                     Text("Delete")
                         .font(.headline)
@@ -60,6 +60,25 @@ struct DateDetailView: View {
             }
         }
         .navigationBarBackButtonHidden(true)
+        .confirmationDialog("Delete Comfrimation", isPresented: $showingComfirm) {
+            Button(role: .destructive) {
+                viewModel.deleteDate()
+                navigationPath.clear()
+            } label: {
+                Text("Delete")
+                    .foregroundStyle(.red)
+            }
+        } message: {
+            Text("Are you sure?")
+        }
+    }
+}
+
+struct DateDeleteConfirmSheet: View {
+    var body: some View {
+        List {
+            
+        }
     }
 }
 
@@ -71,7 +90,6 @@ struct DateDetailView: View {
         mode: .dDay,
         calculatedDays: "D-day"
     )
-    
     
     let viewModel = DateViewModel(
         dateManageInteractor: DateManageInteractor(

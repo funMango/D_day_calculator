@@ -66,12 +66,19 @@ class DateViewModel: ObservableObject {
         dateManageInteractor.save(from: timeSpan)
     }
     
+    func deleteDate() {
+        let timeSpan = getTimeSpan()
+        dateManageInteractor.delete(from: timeSpan)
+    }
+    
     private func getTimeSpan() -> TimeSpan {
         guard let mode = self.mode else {
             fatalError("[Error]: mode가 선택되지 않았습니다.")
         }
         
         return TimeSpan(
+            id: self.id,
+            createdDate: self.createdDate,
             title: self.title,
             startDate: self.selectedDate,
             endDate: Date(),

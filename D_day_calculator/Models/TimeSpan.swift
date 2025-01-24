@@ -18,12 +18,20 @@ class TimeSpan: Equatable {
     var mode: Mode
     var calculatedDays: String
     
-    init(id: String = UUID().uuidString, title: String, startDate: Date, endDate: Date, mode: Mode, calculatedDays: String) {
-        self.id = id
+    init(id: String? = UUID().uuidString,
+         createdDate: Date? = Date(),
+         title: String,
+         startDate: Date,
+         endDate: Date,
+         mode: Mode,
+         calculatedDays: String
+    ){
+        self.id = id ?? UUID().uuidString
+        self.createdDate = createdDate ?? Date()
         self.title = title
         self.startDate = startDate
         self.endDate = endDate
         self.mode = mode
         self.calculatedDays = calculatedDays
-    }
+    }     
 }

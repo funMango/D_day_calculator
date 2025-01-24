@@ -45,6 +45,7 @@ struct DatePickerView: View {
             DatePickerWheelView(selectedDate: $viewModel.selectedDate)
                 .presentationDetents([.fraction(0.4)])
                 .environmentObject(viewModel)
+                .presentationDragIndicator(.visible)
         }
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
