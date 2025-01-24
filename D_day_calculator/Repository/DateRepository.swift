@@ -14,6 +14,7 @@ protocol DateRepoProtocol {
     func saveDate(from timeSpan: TimeSpan)
     func fetchDate() -> [TimeSpan]
     func deleteDate(from timeSpan: TimeSpan)
+    func updateDate(from timeSpan: TimeSpan)
 }
 
 class DateRepository: DateRepoProtocol {

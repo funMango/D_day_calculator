@@ -37,7 +37,7 @@
 				Interators/DateManageInteractor.swift,
 				Models/Mode.swift,
 				Models/TimeSpan.swift,
-				Presents/ViewModels/DatesViewModels.swift,
+				Presents/ViewModels/DatesViewModel.swift,
 				Presents/ViewModels/DateViewModel.swift,
 				Presents/Views/DateDetailView.swift,
 				Presents/Views/DatePickerView.swift,

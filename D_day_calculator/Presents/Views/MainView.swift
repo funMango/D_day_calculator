@@ -9,15 +9,12 @@ import SwiftUI
 import SwiftData
 
 struct MainView: View {
-    @StateObject private var navigationPath = NavigationPathObject()
-    @StateObject private var viewModel = DatesViewModels(
-        dateManager: DateManageInteractor(
-            dateManageService: DateRepository.shared
-        )
-    )
-    
+    @EnvironmentObject var navigationPath: NavigationPathObject
+    @EnvironmentObject var vmContainer: ViewModelContainer
+    @StateObject var viewModel: DatesViewModel
     @State private var searchText = ""
-    var filteredDates: [TimeSpan] {
+    
+    private var filteredDates: [TimeSpan] {
         guard !searchText.isEmpty else { return viewModel.dates }
         return viewModel.dates.filter { $0.title.contains(searchText)}
     }
@@ -40,7 +37,7 @@ struct MainView: View {
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
                     Button {
-                        navigationPath.path.append("ModeSelectionView")
+                        navigationPath.path.append(NavigationTarget.modeSelection)
                     } label: {
                         Image(systemName: "plus.circle")
                             .resizable()
@@ -55,34 +52,26 @@ struct MainView: View {
                         .fontWeight(.bold)
                 }
             }
-            .navigationDestination(for: String.self) { string in
-                if string == "ModeSelectionView" {
+            .navigationDestination(for: NavigationTarget.self) { target in
+                switch target {
+                case .modeSelection:
                     ModeSelectionView()
+                case .datePicker(let viewModel, let type):
+                    DatePickerView(viewModel: viewModel, type: type)
                 }
             }
-            .navigationDestination(for: TimeSpan.self) { timeSpan in                
-                switch timeSpan.mode {
-                case .dDay:
-                    DateDetailView(viewModel: DateViewModel(
-                            dateManageInteractor: DateManageInteractor(
-                                dateManageService: DateRepository.shared),
-                            dateCalcInteractor: DdayCalcInterator(),
-                            timeSpan: timeSpan
-                        )
-                    )
-                case .counting:
-                    DateDetailView(viewModel: DateViewModel(
-                            dateManageInteractor: DateManageInteractor(
-                                dateManageService: DateRepository.shared),
-                            dateCalcInteractor: CountingCalcInterator(),
-                            timeSpan: timeSpan
-                        )
-                    )
-                }
+            .navigationDestination(for: TimeSpan.self) { timeSpan in
+                let viewModel = vmContainer.getDateViewModel(
+                    mode: timeSpan.mode,
+                    timeSpan: timeSpan
+                )
+                DateDetailView(viewModel: viewModel)
             }
         }
         .searchable(text: $searchText)
         .environmentObject(navigationPath)
+        .environmentObject(vmContainer)
+        
     }
 }
 
@@ -124,5 +113,9 @@ struct DayDetailView: View {
 
 
 #Preview {
-    MainView()
+    let viewModelContainer = ViewModelContainer(dateRepository: DateRepository.shared)
+    
+    MainView(viewModel: viewModelContainer.getDatesViewModel())
+        .environmentObject(NavigationPathObject())
+        .environmentObject(viewModelContainer)
 }

@@ -8,11 +8,17 @@
 import SwiftUI
 import SwiftData
 
+enum DatePickerViewType {
+    case create
+    case edit
+}
+
 struct DatePickerView: View {
-    @EnvironmentObject var navigationPath: NavigationPathObject
-    @StateObject var viewModel: DateViewModel        
+    @EnvironmentObject var navigationPath: NavigationPathObject    
+    @StateObject var viewModel: DateViewModel
     @Environment(\.presentationMode) var presentationMode
     @State var showingSheet = false
+    var type: DatePickerViewType
                                             
     var body: some View {
         VStack {
@@ -31,8 +37,14 @@ struct DatePickerView: View {
             Spacer()
             
             Button {
-                navigationPath.clear()
-                viewModel.saveDate()
+                switch type {
+                    case .create:
+                        viewModel.saveDate()
+                    case .edit:
+                    viewModel.updateDate()
+                }
+                
+                navigationPath.clear()                                
             } label: {
                 SaveBtn(text: "Save")
             }
@@ -180,7 +192,7 @@ struct DatePickerWheelView: View {
         mode: .dDay
     )
     
-    DatePickerView(viewModel: viewModel)
+    DatePickerView(viewModel: viewModel, type: .create)
         .environmentObject(NavigationPathObject())
         .environmentObject(viewModel)
 }

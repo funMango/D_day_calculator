@@ -38,7 +38,12 @@ struct DateDetailView: View {
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 Button {
-                    
+                    navigationPath.path.append(
+                        NavigationTarget.datePicker(
+                            viewModel: self.viewModel,
+                            type: .edit
+                        )
+                    )
                 } label: {
                     Text("Edit")
                         .foregroundStyle(.red)
@@ -60,6 +65,7 @@ struct DateDetailView: View {
             }
         }
         .navigationBarBackButtonHidden(true)
+        .environmentObject(navigationPath)
         .confirmationDialog("Delete Comfrimation", isPresented: $showingComfirm) {
             Button(role: .destructive) {
                 viewModel.deleteDate()
@@ -70,14 +76,6 @@ struct DateDetailView: View {
             }
         } message: {
             Text("Are you sure?")
-        }
-    }
-}
-
-struct DateDeleteConfirmSheet: View {
-    var body: some View {
-        List {
-            
         }
     }
 }

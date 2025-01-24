@@ -10,10 +10,14 @@ import SwiftData
 
 @main
 struct D_day_calculatorApp: App {
-    var body: some Scene {
+    @StateObject var navigationPath = NavigationPathObject()
+    @StateObject var vmContainer = ViewModelContainer(dateRepository: DateRepository.shared)
+    
+    var body: some Scene {        
         WindowGroup {
-            MainView()
-                // .modelContainer(for: [DayInfo.self])
+            MainView(viewModel: vmContainer.getDatesViewModel())
+                .environmentObject(navigationPath)
+                .environmentObject(vmContainer)
         }
     }
 }

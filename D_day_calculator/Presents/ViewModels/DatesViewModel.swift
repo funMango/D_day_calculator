@@ -9,7 +9,7 @@ import Foundation
 import SwiftData
 import Combine
 
-class DatesViewModels: ObservableObject {
+class DatesViewModel: ObservableObject {
     @Published var dates: [TimeSpan] = []
     var dateManager: DateManageProtocol
     private var cancellables = Set<AnyCancellable>()

@@ -8,6 +8,32 @@
 import Foundation
 import SwiftUI
 
+enum NavigationTarget: Hashable {
+    case modeSelection
+    case datePicker(viewModel: DateViewModel, type: DatePickerViewType)
+    
+    func hash(into hasher: inout Hasher) {
+        switch self {
+        case .modeSelection:
+            hasher.combine(0)
+        case .datePicker(let viewModel, let type):
+            hasher.combine(viewModel.id)
+            hasher.combine(type)
+        }
+    }
+
+    static func == (lhs: NavigationTarget, rhs: NavigationTarget) -> Bool {
+        switch (lhs, rhs) {
+        case (.modeSelection, .modeSelection):
+            return true
+        case (.datePicker(let lhsViewModel, let lhsType), .datePicker(let rhsViewModel, let rhsType)):
+            return lhsViewModel.id == rhsViewModel.id && lhsType == rhsType
+        default:
+            return false
+        }
+    }
+}
+
 class NavigationPathObject: ObservableObject {
     @Published var path = NavigationPath()
     

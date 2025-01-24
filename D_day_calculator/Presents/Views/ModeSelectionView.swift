@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ModeSelectionView: View {
     @EnvironmentObject var navigationPath: NavigationPathObject
+    @EnvironmentObject var vmContainer: ViewModelContainer
     @Environment(\.presentationMode) var presentationMode
     
     var body: some View {
@@ -16,7 +17,14 @@ struct ModeSelectionView: View {
             List {
                 ForEach(Mode.allCases, id: \.self) { mode in
                     Button {
-                        navigationPath.path.append(mode)
+                        let viewModel = vmContainer.getDateViewModel(mode: mode)
+                        
+                        navigationPath.path.append(
+                            NavigationTarget.datePicker(
+                                viewModel: viewModel,
+                                type: .create
+                            )
+                        )
                     } label: {
                         ModeCellView(mode: mode)
                     }
@@ -25,27 +33,7 @@ struct ModeSelectionView: View {
             }
             .navigationTitle("Mode")
             .navigationBarTitleDisplayMode(.inline)
-            .navigationDestination(for: Mode.self) { mode in
-                switch mode {
-                case .dDay:
-                    DatePickerView(viewModel: DateViewModel(
-                            dateManageInteractor: DateManageInteractor(
-                                dateManageService: DateRepository.shared),
-                            dateCalcInteractor: DdayCalcInterator(),
-                            mode: mode
-                        )
-                    )
-                case .counting:
-                    DatePickerView(viewModel: DateViewModel(
-                            dateManageInteractor: DateManageInteractor(
-                                dateManageService: DateRepository.shared),
-                            dateCalcInteractor: CountingCalcInterator(),
-                            mode: mode
-                        )
-                    )
-                }
-            }
-            .environmentObject(navigationPath)
+            .environmentObject(navigationPath)            
             .listStyle(.plain)
             .listRowSeparator(.hidden)
             .listRowSpacing(15)

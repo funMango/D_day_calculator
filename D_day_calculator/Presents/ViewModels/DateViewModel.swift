@@ -8,13 +8,14 @@
 import Foundation
 import SwiftData
 
-class DateViewModel: ObservableObject {
+class DateViewModel: ObservableObject, Hashable {
     @Published var title = ""
     @Published var selectedDate = Date()
     @Published var mode: Mode?
     @Published var calculatedDays = ""
-    private var id: String?
+    private var timsSpanId: String?
     private var createdDate: Date?
+    let id = UUID().uuidString
     
     var dateCalcInteractor: DateCalcProtocol
     var dateManageInteractor: DateManageProtocol
@@ -37,16 +38,22 @@ class DateViewModel: ObservableObject {
         
         calcDateDiff()
     }
-            
+}
+
+// MARK: - setter
+extension DateViewModel {            
     private func setDate(from timeSpan: TimeSpan) {
-        self.id = timeSpan.id
+        self.timsSpanId = timeSpan.id
         self.createdDate = timeSpan.createdDate
         self.title = timeSpan.title
         self.selectedDate = timeSpan.startDate
         self.mode = timeSpan.mode
         self.calculatedDays = timeSpan.calculatedDays
     }
-            
+}
+
+// MARK: - Date Calculate
+extension DateViewModel {
     func calcDateDiff() {
         guard let mode = mode else {
             fatalError("[Error]: mode가 선택되지 않았습니다.")
@@ -60,7 +67,10 @@ class DateViewModel: ObservableObject {
         
         calculatedDays = dateCalcInteractor.execute(from: dateContext)
     }
-    
+}
+
+//MARK: - CRUD
+extension DateViewModel {
     func saveDate() {
         let timeSpan = getTimeSpan()
         dateManageInteractor.save(from: timeSpan)
@@ -71,13 +81,18 @@ class DateViewModel: ObservableObject {
         dateManageInteractor.delete(from: timeSpan)
     }
     
+    func updateDate() {
+        let timeSpan = getTimeSpan()
+        dateManageInteractor.update(from: timeSpan)
+    }
+    
     private func getTimeSpan() -> TimeSpan {
         guard let mode = self.mode else {
             fatalError("[Error]: mode가 선택되지 않았습니다.")
         }
         
         return TimeSpan(
-            id: self.id,
+            id: self.timsSpanId,
             createdDate: self.createdDate,
             title: self.title,
             startDate: self.selectedDate,
@@ -85,5 +100,16 @@ class DateViewModel: ObservableObject {
             mode: mode,
             calculatedDays: self.calculatedDays
         )
+    }
+}
+
+//MARK: - Hashable
+extension DateViewModel {
+    static func == (lhs: DateViewModel, rhs: DateViewModel) -> Bool {
+        lhs.id == rhs.id
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
     }
 }
