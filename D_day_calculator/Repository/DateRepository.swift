@@ -34,7 +34,7 @@ class DateRepository: DateRepoProtocol {
             )
             self.modelContext = modelContainer.mainContext
         } catch {
-            fatalError("[Error] container 시작 실패: \(error)")
+            fatalError("[Error] DateRepository container 시작 실패: \(error)")
         }
     }
     

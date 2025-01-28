@@ -69,7 +69,6 @@ struct DatePickerView: View {
 }
 
 // MARK: - CalculatedDaysView
-
 struct CalculatedDaysView: View {
     @EnvironmentObject var viewModel: DateViewModel
     private let today = Date()
@@ -95,7 +94,6 @@ struct CalculatedDaysView: View {
 }
 
 // MARK: - DateSelectView
-
 struct DateSelectView: View {
     @EnvironmentObject var viewModel: DateViewModel
     @Binding var showingSheet: Bool

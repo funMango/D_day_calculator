@@ -55,7 +55,7 @@ struct MainView: View {
                 }
                 
                 ToolbarItem(placement: .topBarLeading) {
-                    Text("List")
+                    Text("Home")
                         .font(.largeTitle)
                         .fontWeight(.bold)
                 }
@@ -93,8 +93,7 @@ struct MainCellView: View {
             
             Spacer()
             
-            Text("\(timeSpan.calculatedDays)")
-                .font(.headline)
+            ProgressDay(text: timeSpan.calculatedDays)
         }
     }
 }

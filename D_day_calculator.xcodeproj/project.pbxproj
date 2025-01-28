@@ -45,6 +45,7 @@
 				Repository/DateRepository.swift,
 				UI/LineTextField.swift,
 				UI/NavigationBackBtn.swift,
+				UI/ProgressDay.swift,
 				UI/SaveBtn.swift,
 				Utilities/DateExtension.swift,
 				Utilities/NavigationPath.swift,
