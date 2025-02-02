@@ -11,12 +11,19 @@ import Combine
 
 class DatesViewModel: ObservableObject {
     @Published var dates: [TimeSpan] = []
-    var dateManager: DateManageProtocol
+    private var dateManager: DateManageProtocol
+    private var dateCalculator: DateCalcProtocol
+    private var timer: TimerProtocol
     private var cancellables = Set<AnyCancellable>()
+    private var today = Date.today()
     
-    init(dateManager: DateManageProtocol, dates: [TimeSpan] = []) {
+    init(dates: [TimeSpan] = [], dateManager: DateManageProtocol, dateCalculator: DateCalcProtocol, timer: TimerProtocol) {
         self.dates = dates
         self.dateManager = dateManager
+        self.dateCalculator = dateCalculator
+        self.timer = timer
+        
+        updateTime()
         fetchDates()
         observeRepoChange()
     }
@@ -26,6 +33,17 @@ class DatesViewModel: ObservableObject {
             let target = dates[index]
             dateManager.delete(from: target)
         }
+    }
+    
+    func updateTime() {
+        timer.startTimer { [weak self] in
+            guard let self else { return }
+            updateTimeSpans()
+        }
+    }
+    
+    func updateTimeSpans() {
+        dateManager.updateAll(from: dates, to: today)
     }
     
     private func fetchDates() {

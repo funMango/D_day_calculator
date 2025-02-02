@@ -17,4 +17,8 @@ extension Date {
         dateFormatter.dateFormat = format
         return dateFormatter.string(from: self)
     }
+    
+    static func today() -> Date {
+        return Calendar.current.startOfDay(for: Date())
+    }
 }

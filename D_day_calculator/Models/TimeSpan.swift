@@ -9,7 +9,7 @@ import Foundation
 import SwiftData
 
 @Model
-class TimeSpan: Equatable {
+class TimeSpan: Equatable, Identifiable, CustomStringConvertible {
     @Attribute(.unique) var id: String
     var createdDate = Date()
     var title: String
@@ -33,5 +33,22 @@ class TimeSpan: Equatable {
         self.endDate = endDate
         self.mode = mode
         self.calculatedDays = calculatedDays
-    }     
+    }
+    
+    func update(endDate: Date, calculatedDays: String) {
+        self.endDate = endDate
+        self.calculatedDays = calculatedDays
+    }
+    
+    var description: String {
+            return """
+            TimeSpan:
+              - id: \(id)
+              - title: \(title)
+              - startDate: \(startDate)
+              - endDate: \(endDate)
+              - mode: \(mode)
+              - calculatedDays: \(calculatedDays)
+            """
+        }
 }

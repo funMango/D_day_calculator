@@ -88,14 +88,8 @@ struct DateDetailView: View {
         mode: .dDay,
         calculatedDays: "D-day"
     )
+    let viewModelContainer = ViewModelContainer(dateRepository: DateRepository())
     
-    let viewModel = DateViewModel(
-        dateManageInteractor: DateManageInteractor(
-            dateManageService: DateRepository.shared),
-        dateCalcInteractor: CountingCalcInterator(),
-        timeSpan: timeSpan
-    )
-    
-    DateDetailView(viewModel: viewModel)
+    DateDetailView(viewModel: viewModelContainer.getDateViewModel(mode: .dDay))
         .environmentObject(NavigationPathObject())
 }

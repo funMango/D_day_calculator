@@ -33,7 +33,7 @@ struct MainView: View {
                                     )
                                 )
                             )
-                        } label: {
+                        } label: {                            
                             MainCellView(timeSpan: timeSpan)
                         }
                     }
@@ -41,6 +41,7 @@ struct MainView: View {
                 }
                 .listStyle(.plain)
             }
+            .navigationTitle("Home")
             .searchable(text: $searchText)
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
@@ -52,13 +53,7 @@ struct MainView: View {
                             .frame(width: 30, height: 30)
                             .foregroundStyle(.red)
                     }
-                }
-                
-                ToolbarItem(placement: .topBarLeading) {
-                    Text("Home")
-                        .font(.largeTitle)
-                        .fontWeight(.bold)
-                }
+                }                
             }
             .navigationDestination(for: NavigationTarget.self) { target in
                 switch target {
@@ -73,12 +68,19 @@ struct MainView: View {
         }
         .environmentObject(navigationPath)
         .environmentObject(vmContainer)
+        .onAppear() {
+            viewModel.updateTimeSpans()
+        }
     }
 }
 
 // MARK: - ListCell
 struct MainCellView: View {
     var timeSpan: TimeSpan
+    
+    init(timeSpan: TimeSpan) {
+        self.timeSpan = timeSpan
+    }
     
     var body: some View {
         HStack {
@@ -99,7 +101,7 @@ struct MainCellView: View {
 }
 
 #Preview {
-    let viewModelContainer = ViewModelContainer(dateRepository: DateRepository.shared)
+    let viewModelContainer = ViewModelContainer(dateRepository: DateRepository())
     
     MainView(viewModel: viewModelContainer.getDatesViewModel())
         .environmentObject(NavigationPathObject())

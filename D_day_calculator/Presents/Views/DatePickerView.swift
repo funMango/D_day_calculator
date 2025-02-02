@@ -41,7 +41,7 @@ struct DatePickerView: View {
                     case .create:
                         viewModel.saveDate()
                     case .edit:
-                    viewModel.updateDate()
+                        viewModel.updateDate()
                 }
                 
                 navigationPath.clear()                                
@@ -180,12 +180,8 @@ struct DatePickerWheelView: View {
 }
 
 #Preview {
-    let viewModel = DateViewModel(
-        dateManageInteractor: DateManageInteractor(
-            dateManageService: DateRepository.shared),
-        dateCalcInteractor: CountingCalcInterator(),
-        mode: .dDay
-    )
+    let viewModelContainer = ViewModelContainer(dateRepository: DateRepository())
+    let viewModel = viewModelContainer.getDateViewModel(mode: .counting)
     
     DatePickerView(viewModel: viewModel, type: .create)
         .environmentObject(NavigationPathObject())
