@@ -15,31 +15,25 @@ class ViewModelContainer: ObservableObject {
     }
     
     func getDateViewModel(mode: Mode, timeSpan: TimeSpan? = nil) -> DateViewModel {
-        switch mode {
-        case .dDay:
-            return DateViewModel(
-                dateManageInteractor: DateManageInteractor(
-                    dateManageService: dateRepository),
-                dateCalcInteractor: DdayCalcInterator(),
-                timeSpan: timeSpan,
-                mode: mode
-            )
-        case .counting:
-            return DateViewModel(
-                dateManageInteractor: DateManageInteractor(
-                    dateManageService: dateRepository),
-                dateCalcInteractor: CountingCalcInterator(),
-                timeSpan: timeSpan,
-                mode: mode
-            )
-        }
+        return DateViewModel(
+            dateManageInteractor: DateManageInteractor(
+                dateRepository: dateRepository,
+                dateCalculator: DateCalcInterator()
+            ),
+            dateCalcInteractor: DateCalcInterator(),
+            timeSpan: timeSpan,
+            mode: mode
+        )
     }
     
     func getDatesViewModel() -> DatesViewModel {
         return DatesViewModel(
             dateManager: DateManageInteractor(
-                dateManageService: dateRepository
-            )
+                dateRepository: dateRepository,
+                dateCalculator: DateCalcInterator()
+            ),
+            dateCalculator: DateCalcInterator(),
+            timer: TimerInteractor()
         )
     }
 }

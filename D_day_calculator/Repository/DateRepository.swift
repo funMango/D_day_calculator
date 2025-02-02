@@ -18,15 +18,12 @@ protocol DateRepoProtocol {
 }
 
 class DateRepository: DateRepoProtocol {
-    private let modelContainer: ModelContainer
-    private let modelContext: ModelContext
+    let modelContainer: ModelContainer
+    let modelContext: ModelContext
     var event = PassthroughSubject<Void, Never>()
     
     @MainActor
-    static let shared = DateRepository()
-    
-    @MainActor
-    private init() {
+    init() {
         do {
             self.modelContainer = try ModelContainer(
                 for: TimeSpan.self,
