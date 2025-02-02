@@ -14,7 +14,7 @@ struct DateContext {
 }
 
 protocol DateCalcProtocol {
-    func execute(from dateContext: DateContext) -> String
+    func calculate(mode: Mode, dateContext: DateContext) -> String
 }
 
 extension DateCalcProtocol {
@@ -27,25 +27,36 @@ extension DateCalcProtocol {
     }
 }
 
-struct DdayCalcInterator: DateCalcProtocol {
-    func execute(from dateContext: DateContext) -> String {
+struct DateCalcInterator: DateCalcProtocol{
+    func calculate(mode: Mode, dateContext: DateContext) -> String {
+        switch mode {
+        case .dDay:
+            return dDayCalc(from: dateContext)
+        case .counting:
+            return countingCalc(from: dateContext)
+        }
+    }
+    
+    private func dDayCalc(from dateContext: DateContext) -> String {
         let day = calcDiffDate(from: dateContext)
         
         if day == 0 {
             return "D-day"
-        }
-        
-        return "D\(day)"
+        } else if day > 0 {
+            return "D+\(day)"
+        } else {
+            return "D\(day)"
+        }        
     }
-}
-
-struct CountingCalcInterator: DateCalcProtocol {
-    func execute(from dateContext: DateContext) -> String {
+    
+    private func countingCalc(from dateContext: DateContext) -> String {
         let day = calcDiffDate(from: dateContext) + 1
         
         return "\(day) days"
     }
 }
+
+
 
 
    

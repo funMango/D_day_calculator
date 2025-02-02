@@ -16,7 +16,7 @@ class DateViewModel: ObservableObject, Hashable {
     private var timsSpanId: String?
     private var createdDate: Date?
     let id = UUID().uuidString
-    
+            
     var dateCalcInteractor: DateCalcProtocol
     var dateManageInteractor: DateManageProtocol
     
@@ -65,7 +65,7 @@ extension DateViewModel {
             mode: mode
         )
         
-        calculatedDays = dateCalcInteractor.execute(from: dateContext)
+        calculatedDays = dateCalcInteractor.calculate(mode: mode, dateContext: dateContext)                                
     }
 }
 
