@@ -40,13 +40,42 @@ class DateViewModel: ObservableObject, Hashable {
     }
 }
 
+// MARK: - getter
+extension DateViewModel {
+    func getStartDate() -> String {
+        guard let mode = self.mode else {
+            fatalError("mode is nil")
+        }
+        
+        switch mode {
+        case .dDay:
+            return Date.today().formatted(DateFormat.USA.rawValue)
+        case .counting:
+            return self.selectedDate.formatted(DateFormat.USA.rawValue)
+        }
+    }
+    
+    func getEndDate() -> String {
+        guard let mode = self.mode else {
+            fatalError("mode is nil")
+        }
+        
+        switch mode {
+        case .dDay:
+            return self.selectedDate.formatted(DateFormat.USA.rawValue)
+        case .counting:
+            return Date.today().formatted(DateFormat.USA.rawValue)
+        }
+    }
+}
+
 // MARK: - setter
 extension DateViewModel {            
     private func setDate(from timeSpan: TimeSpan) {
         self.timsSpanId = timeSpan.id
         self.createdDate = timeSpan.createdDate
         self.title = timeSpan.title
-        self.selectedDate = timeSpan.startDate
+        self.selectedDate = timeSpan.selectedDate        
         self.mode = timeSpan.mode
         self.calculatedDays = timeSpan.calculatedDays
     }
@@ -69,7 +98,7 @@ extension DateViewModel {
     }
 }
 
-//MARK: - CRUD
+// MARK: - CRUD
 extension DateViewModel {
     func saveDate() {
         let timeSpan = getTimeSpan()
@@ -95,15 +124,15 @@ extension DateViewModel {
             id: self.timsSpanId,
             createdDate: self.createdDate,
             title: self.title,
-            startDate: self.selectedDate,
-            endDate: Date(),
+            selectedDate: self.selectedDate,
+            today: Date(),
             mode: mode,
             calculatedDays: self.calculatedDays
         )
     }
 }
 
-//MARK: - Hashable
+// MARK: - Hashable
 extension DateViewModel {
     static func == (lhs: DateViewModel, rhs: DateViewModel) -> Bool {
         lhs.id == rhs.id

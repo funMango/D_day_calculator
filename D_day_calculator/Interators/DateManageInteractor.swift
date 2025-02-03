@@ -62,19 +62,19 @@ class DateManageInteractor: DateManageProtocol{
     
     private func isEndDateToday(from timeSpans: [TimeSpan], targetDate: Date) -> Bool {
         for timeSpan in timeSpans {
-            if timeSpan.endDate < targetDate { return false }
+            if timeSpan.today < targetDate { return false }
         }
         return true
     }
     
     private func getUpdatedDate(from timeSpan: TimeSpan, to targetDate: Date) -> TimeSpan {
         let dateContext = DateContext(
-            startDate: timeSpan.startDate,
+            startDate: timeSpan.selectedDate,
             endDate: targetDate,
             mode: timeSpan.mode
         )
         let calculatedDays = dateCalculator.calculate(mode: timeSpan.mode, dateContext: dateContext)
-        timeSpan.update(endDate: targetDate, calculatedDays: calculatedDays)
+        timeSpan.update(today: targetDate, calculatedDays: calculatedDays)
         return timeSpan
     }
     

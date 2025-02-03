@@ -21,4 +21,19 @@ extension Date {
     static func today() -> Date {
         return Calendar.current.startOfDay(for: Date())
     }
+    
+    static func getDate(year: Int, month: Int, day: Int) -> Date {
+        var dateComponents = DateComponents()
+        dateComponents.year = year
+        dateComponents.month = month
+        dateComponents.day = day
+        
+        
+        let calendar = Calendar.current
+        if let targetDate = calendar.date(from: dateComponents) {
+            return targetDate
+        } else {
+            fatalError("Invalid date components: year=\(year), month=\(month), day=\(day). Please check input values.")
+        }
+    }
 }

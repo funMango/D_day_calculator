@@ -24,8 +24,8 @@ final class DateRepositoryTest: XCTestCase {
         // Given
         let timeSpan = TimeSpan(
             title: "example",
-            startDate: Date(),
-            endDate: Date(),
+            selectedDate: Date(),
+            today: Date(),
             mode: .dDay,
             calculatedDays: "D-day"
         )
@@ -49,8 +49,8 @@ final class DateRepositoryTest: XCTestCase {
         // Given
         let timeSpan = TimeSpan(
             title: "example",
-            startDate: Date(),
-            endDate: Date(),
+            selectedDate: Date(),
+            today: Date(),
             mode: .dDay,
             calculatedDays: "D-day"
         )
@@ -73,8 +73,8 @@ final class DateRepositoryTest: XCTestCase {
         let timeSpan = TimeSpan(
             id: id,
             title: "example",
-            startDate: Date(),
-            endDate: Date(),
+            selectedDate: Date(),
+            today: Date(),
             mode: .dDay,
             calculatedDays: "D-day"
         )
@@ -83,8 +83,8 @@ final class DateRepositoryTest: XCTestCase {
             TimeSpan(
                 id: id,
                 title: "example1",
-                startDate: Calendar.current.date(from: DateComponents(year: 2025, month: 2, day: 14))!,
-                endDate: Calendar.current.date(from: DateComponents(year: 2025, month: 2, day: 14))!,
+                selectedDate: Calendar.current.date(from: DateComponents(year: 2025, month: 2, day: 14))!,
+                today: Calendar.current.date(from: DateComponents(year: 2025, month: 2, day: 14))!,
                 mode: .counting,
                 calculatedDays: "1 day"
             ),
@@ -92,8 +92,8 @@ final class DateRepositoryTest: XCTestCase {
             TimeSpan(
                 id: id,
                 title: "example2",
-                startDate: Calendar.current.date(from: DateComponents(year: 2025, month: 1, day: 1))!,
-                endDate: Calendar.current.date(from: DateComponents(year: 2025, month: 12, day: 31))!,
+                selectedDate: Calendar.current.date(from: DateComponents(year: 2025, month: 1, day: 1))!,
+                today: Calendar.current.date(from: DateComponents(year: 2025, month: 12, day: 31))!,
                 mode: .counting,
                 calculatedDays: "365 days"
             ),
@@ -101,8 +101,8 @@ final class DateRepositoryTest: XCTestCase {
             TimeSpan(
                 id: id,
                 title: "example3",
-                startDate: Calendar.current.date(from: DateComponents(year: 2024, month: 5, day: 15))!,
-                endDate: Calendar.current.date(from: DateComponents(year: 2025, month: 5, day: 15))!,
+                selectedDate: Calendar.current.date(from: DateComponents(year: 2024, month: 5, day: 15))!,
+                today: Calendar.current.date(from: DateComponents(year: 2025, month: 5, day: 15))!,
                 mode: .dDay,
                 calculatedDays: "365 days"
             ),
@@ -110,8 +110,8 @@ final class DateRepositoryTest: XCTestCase {
             TimeSpan(
                 id: id,
                 title: "example4",
-                startDate: Calendar.current.date(from: DateComponents(year: 2024, month: 7, day: 10))!,
-                endDate: Calendar.current.date(from: DateComponents(year: 2024, month: 7, day: 15))!,
+                selectedDate: Calendar.current.date(from: DateComponents(year: 2024, month: 7, day: 10))!,
+                today: Calendar.current.date(from: DateComponents(year: 2024, month: 7, day: 15))!,
                 mode: .counting,
                 calculatedDays: "5 days"
             ),
@@ -119,8 +119,8 @@ final class DateRepositoryTest: XCTestCase {
             TimeSpan(
                 id: id,
                 title: "example5",
-                startDate: Calendar.current.date(from: DateComponents(year: 2023, month: 12, day: 31))!,
-                endDate: Calendar.current.date(from: DateComponents(year: 2024, month: 1, day: 1))!,
+                selectedDate: Calendar.current.date(from: DateComponents(year: 2023, month: 12, day: 31))!,
+                today: Calendar.current.date(from: DateComponents(year: 2024, month: 1, day: 1))!,
                 mode: .dDay,
                 calculatedDays: "1 day"
             ),
@@ -128,8 +128,8 @@ final class DateRepositoryTest: XCTestCase {
             TimeSpan(
                 id: id,
                 title: "example6",
-                startDate: Calendar.current.date(from: DateComponents(year: 2025, month: 2, day: 1))!,
-                endDate: Calendar.current.date(from: DateComponents(year: 2025, month: 2, day: 1))!,
+                selectedDate: Calendar.current.date(from: DateComponents(year: 2025, month: 2, day: 1))!,
+                today: Calendar.current.date(from: DateComponents(year: 2025, month: 2, day: 1))!,
                 mode: .counting,
                 calculatedDays: "1 day"
             )

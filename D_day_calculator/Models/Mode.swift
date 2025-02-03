@@ -9,24 +9,33 @@ import Foundation
 import SwiftData
 
 enum Mode: String, CaseIterable, Hashable, Codable {
-    case dDay = "D-day"
-    case counting = "Counting"
+    case dDay = "Countdown"
+    case counting = "Count Days"
             
     var content: String {
         switch self {
         case .dDay:
-            return "Choose D-Day from today"
+            return "Set a countdown date"
         case .counting:
-            return "Counting day from specified date"
+            return "Count days from specified date"
         }
     }
     
     var dateReference: String {
         switch self {
         case .dDay:
-            return "Until"
+            return "To"
         case .counting:
             return "From"
+        }
+    }
+    
+    var caption: String? {
+        switch self {
+        case .dDay:
+            return nil
+        case .counting:
+            return "Include end date in calculation"
         }
     }
 }

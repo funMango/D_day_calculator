@@ -13,30 +13,30 @@ class TimeSpan: Equatable, Identifiable, CustomStringConvertible {
     @Attribute(.unique) var id: String
     var createdDate = Date()
     var title: String
-    var startDate: Date
-    var endDate: Date
+    var selectedDate: Date
+    var today: Date
     var mode: Mode
     var calculatedDays: String
     
     init(id: String? = UUID().uuidString,
          createdDate: Date? = Date(),
          title: String,
-         startDate: Date,
-         endDate: Date,
+         selectedDate: Date,
+         today: Date,
          mode: Mode,
          calculatedDays: String
     ){
         self.id = id ?? UUID().uuidString
         self.createdDate = createdDate ?? Date()
         self.title = title
-        self.startDate = startDate
-        self.endDate = endDate
+        self.selectedDate = selectedDate
+        self.today = today
         self.mode = mode
         self.calculatedDays = calculatedDays
     }
     
-    func update(endDate: Date, calculatedDays: String) {
-        self.endDate = endDate
+    func update(today: Date, calculatedDays: String) {
+        self.today = today
         self.calculatedDays = calculatedDays
     }
     
@@ -45,8 +45,8 @@ class TimeSpan: Equatable, Identifiable, CustomStringConvertible {
             TimeSpan:
               - id: \(id)
               - title: \(title)
-              - startDate: \(startDate)
-              - endDate: \(endDate)
+              - selectedDate: \(selectedDate)
+              - today: \(today)
               - mode: \(mode)
               - calculatedDays: \(calculatedDays)
             """

@@ -22,8 +22,8 @@ extension DateCalcProtocol {
         let calendar = Calendar.current
         let startOfTarget = calendar.startOfDay(for: dateContext.startDate)
         let startOfToday = calendar.startOfDay(for: dateContext.endDate)
-        let result = calendar.dateComponents([.day], from: startOfTarget, to: startOfToday).day
-        return result ?? 0
+        let result = calendar.dateComponents([.day], from: startOfTarget, to: startOfToday).day ?? 0
+        return result
     }
 }
 
@@ -41,12 +41,13 @@ struct DateCalcInterator: DateCalcProtocol{
         let day = calcDiffDate(from: dateContext)
         
         if day == 0 {
-            return "D-day"
+            return "Event day"
         } else if day > 0 {
-            return "D+\(day)"
+            return "\(day) days\npassed"
         } else {
-            return "D\(day)"
-        }        
+            let absDay = abs(day)
+            return "\(absDay) days"
+        }
     }
     
     private func countingCalc(from dateContext: DateContext) -> String {
