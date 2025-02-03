@@ -45,6 +45,7 @@
 				Presents/Views/DatePickerView.swift,
 				Presents/Views/ModeSelectionView.swift,
 				Repository/DateRepository.swift,
+				UI/DateText.swift,
 				UI/LineTextField.swift,
 				UI/NavigationBackBtn.swift,
 				UI/ProgressDay.swift,

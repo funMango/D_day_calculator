@@ -22,6 +22,24 @@ struct MainView: View {
     var body: some View {
         NavigationStack(path: $navigationPath.path) {
             VStack {
+                HStack {
+                    Text("Home")
+                        .font(.title)
+                        .fontWeight(.bold)
+                    
+                    Spacer()
+                                                                                
+                    Button {
+                        navigationPath.path.append(NavigationTarget.modeSelection)
+                    } label: {
+                        Image(systemName: "plus")
+                            .resizable()
+                            .frame(width: 20, height: 20)
+                            .foregroundStyle(.red)
+                    }
+                }
+                .padding()
+                
                 List {
                     ForEach(filteredDates, id: \.self) { timeSpan in
                         Button {
@@ -40,20 +58,6 @@ struct MainView: View {
                     .onDelete(perform: viewModel.deleteDate)
                 }
                 .listStyle(.plain)
-            }
-            .navigationTitle("Home")
-            .searchable(text: $searchText)
-            .toolbar {
-                ToolbarItem(placement: .confirmationAction) {
-                    Button {
-                        navigationPath.path.append(NavigationTarget.modeSelection)
-                    } label: {
-                        Image(systemName: "plus.circle")
-                            .resizable()
-                            .frame(width: 30, height: 30)
-                            .foregroundStyle(.red)
-                    }
-                }                
             }
             .navigationDestination(for: NavigationTarget.self) { target in
                 switch target {
@@ -88,7 +92,7 @@ struct MainCellView: View {
                 Text(timeSpan.title)
                     .font(.headline)
                     .padding(.bottom, 1)
-                Text("\(timeSpan.mode.dateReference): \(timeSpan.startDate.formatted(DateFormat.USA.rawValue))")
+                Text("\(timeSpan.mode.dateReference) \(timeSpan.selectedDate.formatted(DateFormat.USA.rawValue))")
                     .font(.caption)
                     .foregroundStyle(Color.gray)
             }
@@ -100,7 +104,7 @@ struct MainCellView: View {
     }
 }
 
-#Preview {
+#Preview {    
     let viewModelContainer = ViewModelContainer(dateRepository: DateRepository())
     
     MainView(viewModel: viewModelContainer.getDatesViewModel())

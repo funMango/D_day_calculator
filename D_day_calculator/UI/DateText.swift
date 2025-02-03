@@ -8,11 +8,35 @@
 import SwiftUI
 
 struct DateText: View {
+    var key: String
+    var value: String
+    var caption: String? = nil
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        HStack {
+            VStack(alignment: .leading) {
+                Text(key)
+                
+                
+                if let caption = caption {
+                    Text(caption)
+                        .foregroundStyle(.gray)
+                        .font(.caption)
+                }
+            }
+            
+            Spacer()
+            
+            Text(value)
+                .fontWeight(.medium)
+        }
     }
 }
 
 #Preview {
-    DateText()
+    DateText(
+        key: "From",
+        value: "Jan 1, 2025",
+        caption: "Include end date in calculation"
+    )
 }

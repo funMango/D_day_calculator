@@ -82,10 +82,17 @@ struct CalculatedDaysView: View {
                     .foregroundColor(.black)
                     .padding(.bottom, -25)
                     
-                Text("\nfrom \(today.formatted(DateFormat.USA.rawValue))")
+                Text("\nFrom \(today.formatted(DateFormat.USA.rawValue))")
                     .font(.system(size: 20))
                     .fontWeight(.medium)
                     .foregroundColor(.black)
+                
+                if let caption = viewModel.mode?.caption {
+                    Text("\(caption)")
+                        .font(.caption)
+                        .foregroundStyle(.gray)
+                }
+                
             }
             
             Spacer()

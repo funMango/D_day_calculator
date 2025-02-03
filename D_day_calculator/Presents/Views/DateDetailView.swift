@@ -14,25 +14,25 @@ struct DateDetailView: View {
     
     var body: some View {
         VStack {
-            Spacer()
+            HStack {
+                Text("\(viewModel.title)")
+                    .font(.title)
+                    .fontWeight(.bold)
+                    .foregroundStyle(.black)
+                
+                Spacer()
+            }
+            .padding()
             
-            Text(viewModel.title)
-                .font(.title)
-                .fontWeight(.semibold)
-                .padding()
-                .padding(.bottom, 30)
-            
-            Text(viewModel.calculatedDays)
-                .font(.largeTitle)
-                .fontWeight(.bold)
-                .padding(.bottom, 2)
-            
-            Text("\(viewModel.mode?.dateReference ?? "") \(viewModel.selectedDate.formatted(DateFormat.USA.rawValue))")
-            
-            Spacer()
-            Spacer()
+            List {
+                DateText(key: "From", value: viewModel.getStartDate())
+                
+                DateText(key: "To", value: viewModel.getEndDate())
+                
+                DateText(key: "Result", value: viewModel.calculatedDays, caption: viewModel.mode?.caption)
+            }
+            .listStyle(.plain)                                                        
         }
-        .padding()
         .navigationTitle("Date Detail")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
@@ -82,14 +82,17 @@ struct DateDetailView: View {
 
 #Preview {
     let timeSpan = TimeSpan(
-        title: "Test",
-        startDate: Date(),
-        endDate: Date(),
-        mode: .dDay,
-        calculatedDays: "D-day"
+        title: "Counting Test Detail",
+        selectedDate: Date.getDate(year: 2024, month: 3, day: 1),
+        today: Date.getDate(year: 2025, month: 3, day: 1),
+        mode: .counting,
+        calculatedDays: ""
     )
-    let viewModelContainer = ViewModelContainer(dateRepository: DateRepository())
     
-    DateDetailView(viewModel: viewModelContainer.getDateViewModel(mode: .dDay))
+    let repo = DateRepository()
+            
+    let viewModelContainer = ViewModelContainer(dateRepository: repo)
+    
+    DateDetailView(viewModel: viewModelContainer.getDateViewModel(mode: .dDay, timeSpan: timeSpan))
         .environmentObject(NavigationPathObject())
 }
