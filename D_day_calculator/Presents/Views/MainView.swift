@@ -13,11 +13,6 @@ struct MainView: View {
     @EnvironmentObject var vmContainer: ViewModelContainer
     @StateObject var viewModel: DatesViewModel
     @State private var searchText = ""
-    
-    private var filteredDates: [TimeSpan] {
-        guard !searchText.isEmpty else { return viewModel.dates }
-        return viewModel.dates.filter { $0.title.contains(searchText)}
-    }
             
     var body: some View {
         NavigationStack(path: $navigationPath.path) {
@@ -40,24 +35,33 @@ struct MainView: View {
                 }
                 .padding()
                 
-                List {
-                    ForEach(filteredDates, id: \.self) { timeSpan in
-                        Button {
-                            navigationPath.path.append(
-                                NavigationTarget.dateDetail(viewModel:
-                                    vmContainer.getDateViewModel(
-                                        mode: timeSpan.mode,
-                                        timeSpan: timeSpan
+                if viewModel.dates.isEmpty {
+                    Text("No Events")
+                        .font(.title2)
+                        .fontWeight(.semibold)
+                        .foregroundStyle(.lightGray)
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        .padding(.bottom, 30)                    
+                } else {
+                    List {
+                        ForEach(viewModel.dates, id: \.self) { timeSpan in
+                            Button {
+                                navigationPath.path.append(
+                                    NavigationTarget.dateDetail(viewModel:
+                                        vmContainer.getDateViewModel(
+                                            mode: timeSpan.mode,
+                                            timeSpan: timeSpan
+                                        )
                                     )
                                 )
-                            )
-                        } label: {                            
-                            MainCellView(timeSpan: timeSpan)
+                            } label: {
+                                MainCellView(timeSpan: timeSpan)
+                            }
                         }
+                        .onDelete(perform: viewModel.deleteDate)
                     }
-                    .onDelete(perform: viewModel.deleteDate)
+                    .listStyle(.plain)
                 }
-                .listStyle(.plain)
             }
             .navigationDestination(for: NavigationTarget.self) { target in
                 switch target {
