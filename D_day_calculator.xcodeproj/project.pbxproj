@@ -52,6 +52,7 @@
 				UI/ProgressDay.swift,
 				UI/SaveBtn.swift,
 				Utilities/DateExtension.swift,
+				Utilities/GestureExtension.swift,
 				Utilities/NavigationPath.swift,
 			);
 			target = 5ADC1B412D33931F0075DA3B /* D_day_calculatorTests */;
