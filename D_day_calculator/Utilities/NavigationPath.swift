@@ -45,4 +45,10 @@ class NavigationPathObject: ObservableObject {
     func clear() {
         path = NavigationPath()
     }
+    
+    func back() {
+        if !path.isEmpty {
+            path.removeLast()
+        }
+    }
 }

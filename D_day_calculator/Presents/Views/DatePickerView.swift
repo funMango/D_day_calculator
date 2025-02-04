@@ -17,38 +17,48 @@ struct DatePickerView: View {
     @EnvironmentObject var navigationPath: NavigationPathObject
     @StateObject var viewModel: DateViewModel
     @Environment(\.presentationMode) var presentationMode
+    @FocusState private var isFocused: Bool
     @State var showingSheet = false
+    
     var type: DatePickerViewType
                                             
     var body: some View {
-        VStack {
-            CalculatedDaysView()
-            .padding()
-            .padding(.bottom, 30)
-            .frame(maxWidth: .infinity)
-                        
-            LineTextField(text: $viewModel.title, title: "Title")
-            .padding(.horizontal)
-            .padding(.bottom, 10)
+        ZStack {
+            BackgroundView(isFocused: Binding(
+                get: { isFocused },
+                set: { isFocused = $0 }
+            ))
             
-            DateSelectView(showingSheet: $showingSheet)
-            .padding(.horizontal)
-                                                                                        
-            Spacer()
-            
-            Button {
-                switch type {
-                    case .create:
-                        viewModel.saveDate()
-                    case .edit:
-                        viewModel.updateDate()
-                }
+            VStack {
+                CalculatedDaysView()
+                .padding()
+                .padding(.bottom, 30)
+                .frame(maxWidth: .infinity)
+                            
+                LineTextField(text: $viewModel.title, title: "Title")
+                .padding(.horizontal)
+                .padding(.bottom, 10)
+                .focused($isFocused)
                 
-                navigationPath.clear()                                
-            } label: {
-                SaveBtn(text: "Save")
+                DateSelectView(showingSheet: $showingSheet)
+                .padding(.horizontal)
+                                                                                            
+                Spacer()
+                
+                Button {
+                    switch type {
+                        case .create:
+                            viewModel.saveDate()
+                            navigationPath.clear()
+                        case .edit:
+                            viewModel.updateDate()
+                            navigationPath.back()
+                    }
+                } label: {
+                    SaveBtn(text: "Save")
+                }
+                .padding()
             }
-            .padding()
         }
         .navigationTitle("Date")
         .navigationBarTitleDisplayMode(.inline)
