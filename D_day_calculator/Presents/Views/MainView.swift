@@ -55,13 +55,9 @@ struct MainView: View {
                         .onDelete(perform: viewModel.deleteDate)
                     }
                     .listStyle(.plain)
-                }
-                
-                Button() {
-                    let date = Date.getDate(year: 2025, month: 02, day: 07)
-                    viewModel.updateTimeSpans(targetDate: date)
-                } label: {
-                    Text("Update")
+                    .refreshable() {
+                        viewModel.updateDates()
+                    }
                 }
             }
             .navigationDestination(for: NavigationTarget.self) { target in
@@ -77,9 +73,6 @@ struct MainView: View {
         }
         .environmentObject(navigationPath)
         .environmentObject(vmContainer)
-        .onAppear() {
-            viewModel.updateTimeSpans()
-        }
     }
 }
 

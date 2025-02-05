@@ -35,7 +35,32 @@ extension Date {
         if let targetDate = calendar.date(from: dateComponents) {
             return targetDate
         } else {
-            fatalError("Invalid date components: year=\(year), month=\(month), day=\(day), hour=\(hour), minute=\(minute), second=\(second). Please check input values.")
+            fatalError(
+                """
+                Invalid date components: 
+                year=\(year), month=\(month), day=\(day), 
+                hour=\(hour), minute=\(minute), second=\(second).                 
+                """
+            )
         }
+    }
+    
+    static func local() -> String {
+        let date = Date()
+
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        formatter.timeZone = TimeZone.current // 로컬 타임존 설정
+
+        let localTimeString = formatter.string(from: date)
+        return localTimeString
+    }
+    
+    static func midnight() -> Date {
+        let now = Date()
+        let calendar = Calendar.current
+        let midnight = calendar.nextDate(after: now, matching: DateComponents(hour: 0, minute: 0, second: 0), matchingPolicy: .strict) ?? now
+        
+        return midnight
     }
 }

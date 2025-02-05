@@ -15,15 +15,14 @@ class DatesViewModel: ObservableObject {
     private var dateCalculator: DateCalcProtocol
     private var timer: TimerProtocol
     private var cancellables = Set<AnyCancellable>()
-    private var today = Date.today()
-    
+        
     init(dates: [TimeSpan] = [], dateManager: DateManageProtocol, dateCalculator: DateCalcProtocol, timer: TimerProtocol) {
         self.dates = dates
         self.dateManager = dateManager
         self.dateCalculator = dateCalculator
         self.timer = timer
         
-        updateTime()
+        updateTime(to: Date.today())
         fetchDates()
         observeRepoChange()
     }
@@ -35,18 +34,19 @@ class DatesViewModel: ObservableObject {
         }
     }
         
-    func updateTime() {
+    func updateTime(to targetDate: Date) {
         let now = Date()
         
-        timer.startTimer(now: now) {
-            DispatchQueue.main.async { [weak self] in                
-                self?.updateTimeSpans()
+        timer.startTimer(now: now, midnight: Date.midnight()) {
+            DispatchQueue.main.async { [weak self] in
+                guard let self else { return }
+                updateDates(to: targetDate)
             }
         }
     }
     
-    func updateTimeSpans(targetDate: Date = Date.today()) {
-        dateManager.updateAll(from: dates, to: targetDate)
+    func updateDates(to targetDate: Date = Date.today()) {
+        self.dateManager.updateAll(from: dates, to: targetDate)
     }
     
     private func fetchDates() {
