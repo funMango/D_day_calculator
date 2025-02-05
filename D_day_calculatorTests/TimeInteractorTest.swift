@@ -9,19 +9,30 @@ import XCTest
 import D_day_calculator
 
 final class TimeInteractorTest: XCTestCase {
-
-    override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+    var timerInteractor: TimerInteractor!
+        
+    override func setUp() {
+        super.setUp()
+        timerInteractor = TimerInteractor()
     }
 
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+    override func tearDown() {
+        timerInteractor = nil
+        super.tearDown()
     }
 
-    func testExample() throws {
-        let timer = TimerInteractor()
-        let now = Date.getDate(year: 2024, month: 02, day: 10, hour: 23, minute: 58, second: 30)
-        let result = timer.getLeftTime(from: now)
-        XCTAssertEqual(result, 90.0)
+    func testStartTimer_ExecutesActionAtMidnight() {
+        let expectation = self.expectation(description: "타이머가 자정에 실행됨")
+        let now = Date()
+                
+        DispatchQueue.global().asyncAfter(deadline: .now() + 1) {
+            let testMidnight = now.addingTimeInterval(1)
+            self.timerInteractor.startTimer(now: now, midnight: testMidnight) {
+                print("✅ 테스트 타이머 실행!")
+                expectation.fulfill()
+            }
+        }
+        
+        waitForExpectations(timeout: 3) // 2초 이내에 실행되면 성공
     }
 }
