@@ -8,23 +8,17 @@
 import Foundation
 
 protocol TimerProtocol {
-    func startTimer(action: @escaping () -> Void)
+    func startTimer(now: Date, action: @escaping () -> Void)
 }
 
 class TimerInteractor: TimerProtocol {
     private var timer: DispatchSourceTimer?
     
-    func startTimer(action: @escaping () -> Void) {
+    func startTimer(now: Date, action: @escaping () -> Void) {
         timer?.cancel() // 기존 타이머 해제
-        
-        let now = Date()
-        let calendar = Calendar.current
-        
-        // 오늘 00:00:00 가져오기
-        let midnight = calendar.nextDate(after: now, matching: DateComponents(hour: 0, minute: 0, second: 0), matchingPolicy: .strict)!
-        
+                        
         // 자정까지 남은 시간(초)
-        let secondsUntilMidnight = midnight.timeIntervalSince(now)
+        let secondsUntilMidnight = getLeftTime(from: now)
         
         // 백그라운드에서도 실행 가능한 DispatchSourceTimer 생성
         timer = DispatchSource.makeTimerSource(queue: DispatchQueue.global(qos: .background))
@@ -38,4 +32,18 @@ class TimerInteractor: TimerProtocol {
         
         timer?.resume()
     }
+    
+    func getLeftTime(from now: Date) -> TimeInterval {        
+        let calendar = Calendar.current
+        let midnight = calendar.nextDate(after: now, matching: DateComponents(hour: 0, minute: 0, second: 0), matchingPolicy: .strict)
+        
+        guard let midnight = midnight else {
+            fatalError("midnigth is nil")
+        }
+        
+        return midnight.timeIntervalSince(now)
+    }
 }
+
+
+

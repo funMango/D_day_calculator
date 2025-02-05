@@ -16,10 +16,7 @@ class ViewModelContainer: ObservableObject {
     
     func getDateViewModel(mode: Mode, timeSpan: TimeSpan? = nil) -> DateViewModel {
         return DateViewModel(
-            dateManageInteractor: DateManageInteractor(
-                dateRepository: dateRepository,
-                dateCalculator: DateCalcInterator()
-            ),
+            dateManageInteractor: getDateManageInteractor(),
             dateCalcInteractor: DateCalcInterator(),
             timeSpan: timeSpan,
             mode: mode
@@ -28,12 +25,23 @@ class ViewModelContainer: ObservableObject {
     
     func getDatesViewModel() -> DatesViewModel {
         return DatesViewModel(
-            dateManager: DateManageInteractor(
-                dateRepository: dateRepository,
-                dateCalculator: DateCalcInterator()
-            ),
+            dateManager: getDateManageInteractor(),
             dateCalculator: DateCalcInterator(),
             timer: TimerInteractor()
+        )
+    }
+    
+    func getDateDetailViewModel(timeSpan: TimeSpan) -> DateDetailViewModel {
+        return DateDetailViewModel(
+            timeSpan: timeSpan,
+            dateManager: getDateManageInteractor()
+        )
+    }
+    
+    private func getDateManageInteractor() -> DateManageInteractor {
+        return DateManageInteractor(
+            dateRepository: dateRepository,
+            dateCalculator: DateCalcInterator()
         )
     }
 }

@@ -39,6 +39,7 @@
 				Interators/TimerInteractor.swift,
 				Models/Mode.swift,
 				Models/TimeSpan.swift,
+				Presents/ViewModels/DateDetailViewModel.swift,
 				Presents/ViewModels/DatesViewModel.swift,
 				Presents/ViewModels/DateViewModel.swift,
 				Presents/Views/DateDetailView.swift,

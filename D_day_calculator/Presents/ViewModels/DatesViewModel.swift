@@ -34,16 +34,19 @@ class DatesViewModel: ObservableObject {
             dateManager.delete(from: target)
         }
     }
-    
+        
     func updateTime() {
-        timer.startTimer { [weak self] in
-            guard let self else { return }
-            updateTimeSpans()
+        let now = Date()
+        
+        timer.startTimer(now: now) {
+            DispatchQueue.main.async { [weak self] in                
+                self?.updateTimeSpans()
+            }
         }
     }
     
-    func updateTimeSpans() {
-        dateManager.updateAll(from: dates, to: today)
+    func updateTimeSpans(targetDate: Date = Date.today()) {
+        dateManager.updateAll(from: dates, to: targetDate)
     }
     
     private func fetchDates() {

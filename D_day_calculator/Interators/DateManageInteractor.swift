@@ -12,12 +12,14 @@ protocol DateManageProtocol {
     var event: PassthroughSubject<Void, Never> { get }
     func save(from timeSpan: TimeSpan)
     func fetch() -> [TimeSpan]
+    func fetch(from timeSpan: TimeSpan) -> TimeSpan?
     func delete(from timeSpan: TimeSpan)
     func update(from timeSpan: TimeSpan)
     func updateAll(from timeSpans: [TimeSpan], to targetDate: Date)
 }
 
-class DateManageInteractor: DateManageProtocol{
+
+class DateManageInteractor: @preconcurrency DateManageProtocol{
     private let dateRepository: DateRepoProtocol
     private let dateCalculator: DateCalcProtocol
     private var cancellables = Set<AnyCancellable>()
@@ -32,9 +34,14 @@ class DateManageInteractor: DateManageProtocol{
     func save(from timeSpan: TimeSpan) {
         dateRepository.saveDate(from: timeSpan)                      
     }
-               
+        
     func fetch() -> [TimeSpan] {
         return dateRepository.fetchDate()
+    }
+        
+    func fetch(from timeSpan: TimeSpan) -> TimeSpan? {
+        let fetched = fetch()
+        return fetched.filter { $0.id == timeSpan.id }.first
     }
     
     func delete(from timeSpan: TimeSpan) {
@@ -47,14 +54,17 @@ class DateManageInteractor: DateManageProtocol{
         }
     }
     
+    @MainActor
     func update(from timeSpan: TimeSpan) {
         dateRepository.updateDate(from: timeSpan)
     }
     
+    @MainActor
     func updateAll(from timeSpans: [TimeSpan], to targetDate: Date) {
         if !isEndDateToday(from: timeSpans, targetDate: targetDate) {
             for timeSpan in timeSpans {
                 let updated = getUpdatedDate(from: timeSpan, to: targetDate)
+                print(timeSpan)
                 dateRepository.updateDate(from: updated)
             }
         }        

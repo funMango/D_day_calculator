@@ -66,7 +66,7 @@ final class DateRepositoryTest: XCTestCase {
     }
     
     @MainActor
-    func test_update_title() throws {
+    func test_update_title() throws {        
         // Given
         let id = UUID().uuidString
         

@@ -12,7 +12,6 @@ struct MainView: View {
     @EnvironmentObject var navigationPath: NavigationPathObject
     @EnvironmentObject var vmContainer: ViewModelContainer
     @StateObject var viewModel: DatesViewModel
-    @State private var searchText = ""
             
     var body: some View {
         NavigationStack(path: $navigationPath.path) {
@@ -47,12 +46,7 @@ struct MainView: View {
                         ForEach(viewModel.dates, id: \.self) { timeSpan in
                             Button {
                                 navigationPath.path.append(
-                                    NavigationTarget.dateDetail(viewModel:
-                                        vmContainer.getDateViewModel(
-                                            mode: timeSpan.mode,
-                                            timeSpan: timeSpan
-                                        )
-                                    )
+                                    NavigationTarget.dateDetail(viewModel: vmContainer.getDateDetailViewModel(timeSpan: timeSpan))
                                 )
                             } label: {
                                 MainCellView(timeSpan: timeSpan)
@@ -61,6 +55,13 @@ struct MainView: View {
                         .onDelete(perform: viewModel.deleteDate)
                     }
                     .listStyle(.plain)
+                }
+                
+                Button() {
+                    let date = Date.getDate(year: 2025, month: 02, day: 07)
+                    viewModel.updateTimeSpans(targetDate: date)
+                } label: {
+                    Text("Update")
                 }
             }
             .navigationDestination(for: NavigationTarget.self) { target in

@@ -9,13 +9,14 @@ import SwiftUI
 
 struct DateDetailView: View {
     @EnvironmentObject var navigationPath: NavigationPathObject
-    @StateObject var viewModel: DateViewModel
+    @EnvironmentObject var vmContainer: ViewModelContainer
+    @StateObject var viewModel: DateDetailViewModel
     @State var showingComfirm = false
-    
+        
     var body: some View {
         VStack {
             HStack {
-                Text("\(viewModel.title)")
+                Text("\(viewModel.timeSpan.title)")
                     .font(.title)
                     .fontWeight(.bold)
                     .foregroundStyle(.black)
@@ -25,11 +26,14 @@ struct DateDetailView: View {
             .padding()
             
             List {
-                DateText(key: "From", value: viewModel.getStartDate())
+                DateText(key: "From", value: viewModel.timeSpan.getStartDate())
                 
-                DateText(key: "To", value: viewModel.getEndDate())
+                DateText(key: "To", value: viewModel.timeSpan.getEndDate())
                 
-                DateText(key: "Result", value: viewModel.calculatedDays, caption: viewModel.mode?.caption)
+                DateText(key: "Result",
+                         value: viewModel.timeSpan.calculatedDays,
+                         caption: viewModel.timeSpan.mode.caption
+                )
             }
             .listStyle(.plain)                                                        
         }
@@ -40,7 +44,10 @@ struct DateDetailView: View {
                 Button {
                     navigationPath.path.append(
                         NavigationTarget.datePicker(
-                            viewModel: self.viewModel,
+                            viewModel: vmContainer.getDateViewModel(
+                                mode: viewModel.timeSpan.mode,
+                                timeSpan: viewModel.timeSpan
+                            ),
                             type: .edit
                         )
                     )
@@ -93,6 +100,6 @@ struct DateDetailView: View {
             
     let viewModelContainer = ViewModelContainer(dateRepository: repo)
     
-    DateDetailView(viewModel: viewModelContainer.getDateViewModel(mode: .dDay, timeSpan: timeSpan))
+    DateDetailView(viewModel: viewModelContainer.getDateDetailViewModel(timeSpan: timeSpan))
         .environmentObject(NavigationPathObject())
 }

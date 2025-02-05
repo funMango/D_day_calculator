@@ -28,44 +28,17 @@ class DateViewModel: ObservableObject, Hashable {
         self.dateManageInteractor = dateManageInteractor
         self.dateCalcInteractor = dateCalcInteractor
         
+        // 새로 만들때
         if let mode = mode {
             self.mode = mode
         }
         
+        // 수정할때
         if let timeSpan = timeSpan {
             setDate(from: timeSpan)
         }
         
         calcDateDiff()
-    }
-}
-
-// MARK: - getter
-extension DateViewModel {
-    func getStartDate() -> String {
-        guard let mode = self.mode else {
-            fatalError("mode is nil")
-        }
-        
-        switch mode {
-        case .dDay:
-            return Date.today().formatted(DateFormat.USA.rawValue)
-        case .counting:
-            return self.selectedDate.formatted(DateFormat.USA.rawValue)
-        }
-    }
-    
-    func getEndDate() -> String {
-        guard let mode = self.mode else {
-            fatalError("mode is nil")
-        }
-        
-        switch mode {
-        case .dDay:
-            return self.selectedDate.formatted(DateFormat.USA.rawValue)
-        case .counting:
-            return Date.today().formatted(DateFormat.USA.rawValue)
-        }
     }
 }
 
@@ -105,11 +78,6 @@ extension DateViewModel {
         dateManageInteractor.save(from: timeSpan)
     }
     
-    func deleteDate() {
-        let timeSpan = getTimeSpan()
-        dateManageInteractor.delete(from: timeSpan)
-    }
-    
     func updateDate() {
         let timeSpan = getTimeSpan()
         dateManageInteractor.update(from: timeSpan)
@@ -125,7 +93,7 @@ extension DateViewModel {
             createdDate: self.createdDate,
             title: self.title,
             selectedDate: self.selectedDate,
-            today: Date(),
+            today: Date.today(),
             mode: mode,
             calculatedDays: self.calculatedDays
         )
