@@ -39,9 +39,11 @@ struct DatePickerView: View {
                 .padding(.horizontal)
                 .padding(.bottom, 10)
                 .focused($isFocused)
+                .frame(maxWidth: .infinity)
                 
                 DateSelectView(showingSheet: $showingSheet)
                 .padding(.horizontal)
+                .frame(maxWidth: .infinity)
                                                                                             
                 Spacer()
                 

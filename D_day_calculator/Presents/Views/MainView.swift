@@ -38,7 +38,7 @@ struct MainView: View {
                     Text("No Events")
                         .font(.title2)
                         .fontWeight(.semibold)
-                        .foregroundStyle(.lightGray)
+                        .foregroundStyle(.lightSilver)
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                         .padding(.bottom, 30)                    
                 } else {
