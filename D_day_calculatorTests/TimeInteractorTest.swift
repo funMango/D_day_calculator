@@ -27,7 +27,7 @@ final class TimeInteractorTest: XCTestCase {
                 
         DispatchQueue.global().asyncAfter(deadline: .now() + 1) {
             let testMidnight = now.addingTimeInterval(1)
-            self.timerInteractor.startTimer(now: now, midnight: testMidnight) {
+            self.timerInteractor.startTimer(now: now, midnight: testMidnight) { nextDay in
                 print("✅ 테스트 타이머 실행!")
                 expectation.fulfill()
             }

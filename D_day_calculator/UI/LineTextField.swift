@@ -14,8 +14,12 @@ struct LineTextField: View {
     var body: some View {
         VStack {
             TextField(title, text: $text)
+                .keyboardType(.default)
+                .autocorrectionDisabled(true)
                 .onAppear {
-                    UITextField.appearance().clearButtonMode = .whileEditing
+                    DispatchQueue.main.async {
+                        UITextField.appearance().clearButtonMode = .whileEditing                        
+                    }
                 }
             
             Divider()
