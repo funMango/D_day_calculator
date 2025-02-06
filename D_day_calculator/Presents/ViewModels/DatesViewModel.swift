@@ -22,7 +22,7 @@ class DatesViewModel: ObservableObject {
         self.dateCalculator = dateCalculator
         self.timer = timer
         
-        updateTime(to: Date.today())
+        updateTime()
         fetchDates()
         observeRepoChange()
     }
@@ -34,13 +34,13 @@ class DatesViewModel: ObservableObject {
         }
     }
         
-    func updateTime(to targetDate: Date) {
+    func updateTime() {
         let now = Date()
         
-        timer.startTimer(now: now, midnight: Date.midnight()) {
+        timer.startTimer(now: now, midnight: Date.midnight()) { nextDay in
             DispatchQueue.main.async { [weak self] in
                 guard let self else { return }
-                updateDates(to: targetDate)
+                updateDates(to: nextDay)
             }
         }
     }

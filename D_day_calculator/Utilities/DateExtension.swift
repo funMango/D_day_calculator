@@ -17,6 +17,16 @@ extension Date {
         dateFormatter.dateFormat = format
         return dateFormatter.string(from: self)
     }
+    
+    func getString() -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        formatter.timeZone = TimeZone.current // 로컬 타임존 설정
+
+        let localTimeString = formatter.string(from: self)
+        
+        return localTimeString
+    }
             
     static func today() -> Date {
         return Calendar.current.startOfDay(for: Date())

@@ -8,13 +8,13 @@
 import Foundation
 
 protocol TimerProtocol {
-    func startTimer(now: Date, midnight: Date, action: @escaping () -> Void)
+    func startTimer(now: Date, midnight: Date, action: @escaping (_ nextDay: Date) -> Void)
 }
 
 class TimerInteractor: TimerProtocol {
     private var timer: DispatchSourceTimer?
     
-    func startTimer(now: Date, midnight: Date, action: @escaping () -> Void) {
+    func startTimer(now: Date, midnight: Date, action: @escaping (_ nextDay: Date) -> Void) {
         timer?.cancel() // 기존 타이머 해제
         
         // 자정까지 남은 시간(초)
@@ -27,8 +27,8 @@ class TimerInteractor: TimerProtocol {
         // 자정까지 기다렸다가 실행, 이후 매 24시간(86400초)마다 실행
         timer?.schedule(deadline: .now() + secondsUntilMidnight, repeating: 86400)
         
-        timer?.setEventHandler {
-            action()
+        timer?.setEventHandler {            
+            action(Date.today())
         }
         
         timer?.resume()
