@@ -14,7 +14,8 @@ struct DateContext {
 }
 
 protocol DateCalcProtocol {
-    func calculate(mode: Mode, dateContext: DateContext) -> String
+    func calcToString(mode: Mode, dateContext: DateContext) -> String
+    func calcToInt(mode: Mode, dateContext: DateContext) -> Int
 }
 
 extension DateCalcProtocol {
@@ -28,32 +29,33 @@ extension DateCalcProtocol {
 }
 
 struct DateCalcInterator: DateCalcProtocol{
-    func calculate(mode: Mode, dateContext: DateContext) -> String {
+    func calcToString(mode: Mode, dateContext: DateContext) -> String {
+        let days = daysCalc(mode: mode, dateContext: dateContext)
+        return daysCalcToString(from: days)
+    }
+    
+    func calcToInt(mode: Mode, dateContext: DateContext) -> Int {
+        return abs(daysCalc(mode: mode, dateContext: dateContext))
+    }
+    
+    private func daysCalc(mode: Mode, dateContext: DateContext) -> Int {
         switch mode {
         case .dDay:
-            return dDayCalc(from: dateContext)
+            return calcDiffDate(from: dateContext)
         case .counting:
-            return countingCalc(from: dateContext)
+            return calcDiffDate(from: dateContext) + 1
         }
     }
     
-    private func dDayCalc(from dateContext: DateContext) -> String {
-        let day = calcDiffDate(from: dateContext)
-        
-        if day == 0 {
+    private func daysCalcToString(from days: Int) -> String {
+        if days == 0 {
             return "Event day"
-        } else if day > 0 {
-            return "\(day) days ago"
+        } else if days > 0 {
+            return "+\(days) days"
         } else {
-            let absDay = abs(day)
+            let absDay = abs(days)
             return "\(absDay) days"
         }
-    }
-    
-    private func countingCalc(from dateContext: DateContext) -> String {
-        let day = calcDiffDate(from: dateContext) + 1
-        
-        return "\(day) days"
     }
 }
 

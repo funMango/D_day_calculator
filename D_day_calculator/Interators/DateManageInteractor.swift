@@ -83,7 +83,7 @@ class DateManageInteractor: @preconcurrency DateManageProtocol{
             endDate: targetDate,
             mode: timeSpan.mode
         )
-        let calculatedDays = dateCalculator.calculate(mode: timeSpan.mode, dateContext: dateContext)
+        let calculatedDays = dateCalculator.calcToString(mode: timeSpan.mode, dateContext: dateContext)
         timeSpan.update(today: targetDate, calculatedDays: calculatedDays)
         return timeSpan
     }

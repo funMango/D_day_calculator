@@ -22,20 +22,20 @@ final class DateDiffInteractorTest: XCTestCase {
         // Given
         let testCases: [(targetDate: DateComponents, today: DateComponents, mode: Mode, expected: String)] = [
             // same date
-            (DateComponents(year: 2025, month: 2, day: 14), DateComponents(year: 2025, month: 2, day: 14), mode: Mode.dDay, "D-day"),
-            (DateComponents(year: 2025, month: 2, day: 14), DateComponents(year: 2025, month: 2, day: 14), mode: Mode.counting, "1 days"),
+            (DateComponents(year: 2025, month: 2, day: 14), DateComponents(year: 2025, month: 2, day: 14), mode: Mode.dDay, "Event day"),
+            (DateComponents(year: 2025, month: 2, day: 14), DateComponents(year: 2025, month: 2, day: 14), mode: Mode.counting, "+1 days"),
             
             // day diff
-            (DateComponents(year: 2025, month: 2, day: 14), DateComponents(year: 2025, month: 2, day: 13), mode: Mode.dDay, "D-1"),
-            (DateComponents(year: 2025, month: 1, day: 1), DateComponents(year: 2025, month: 1, day: 16), mode: Mode.counting, "16 days"),
+            (DateComponents(year: 2025, month: 2, day: 14), DateComponents(year: 2025, month: 2, day: 13), mode: Mode.dDay, "1 days"),
+            (DateComponents(year: 2025, month: 1, day: 1), DateComponents(year: 2025, month: 1, day: 16), mode: Mode.counting, "+16 days"),
             
             // month diff
-            (DateComponents(year: 2025, month: 3, day: 14), DateComponents(year: 2025, month: 2, day: 13), mode: Mode.dDay, "D-29"),
-            (DateComponents(year: 2025, month: 1, day: 1), DateComponents(year: 2025, month: 2, day: 16), mode: Mode.counting, "47 days"),
+            (DateComponents(year: 2025, month: 3, day: 14), DateComponents(year: 2025, month: 2, day: 13), mode: Mode.dDay, "29 days"),
+            (DateComponents(year: 2025, month: 1, day: 1), DateComponents(year: 2025, month: 2, day: 16), mode: Mode.counting, "+47 days"),
             
             // year diff
-            (DateComponents(year: 2025, month: 3, day: 14), DateComponents(year: 2024, month: 2, day: 13), mode: Mode.dDay, "D-395"),
-            (DateComponents(year: 2023, month: 11, day: 18), DateComponents(year: 2025, month: 1, day: 16), mode: Mode.counting, "426 days"),
+            (DateComponents(year: 2025, month: 3, day: 14), DateComponents(year: 2024, month: 2, day: 13), mode: Mode.dDay, "395 days"),
+            (DateComponents(year: 2023, month: 11, day: 18), DateComponents(year: 2025, month: 1, day: 16), mode: Mode.counting, "+426 days"),
         ]
         
         for testCase in testCases {
@@ -55,8 +55,8 @@ final class DateDiffInteractorTest: XCTestCase {
                 mode: testCase.mode
             )
             
-            let result = calculator.calculate(mode: dateContext.mode, dateContext: dateContext)
-            XCTAssertEqual(result, testCase.expected, "Fail: \(testCase)")                                                            
+            let result = calculator.calcToString(mode: dateContext.mode, dateContext: dateContext)
+            XCTAssertEqual(result, testCase.expected, "Fail: \(testCase)")                                                     
         }
     }
 }

@@ -11,11 +11,13 @@ import SwiftData
 class DateViewModel: ObservableObject, Hashable {
     @Published var title = ""
     @Published var selectedDate = Date()
-    @Published var mode: Mode?
+    @Published var mode = Mode.dDay
     @Published var calculatedDays = ""
+    var id = UUID().uuidString
     private var timsSpanId: String?
-    private var createdDate: Date?
-    let id = UUID().uuidString
+    private var createdDate = Date.today()
+    private var days = 0
+    
             
     var dateCalcInteractor: DateCalcProtocol
     var dateManageInteractor: DateManageProtocol
@@ -43,7 +45,11 @@ class DateViewModel: ObservableObject, Hashable {
 }
 
 // MARK: - setter
-extension DateViewModel {            
+extension DateViewModel {
+    func setMode(from mode: Mode) {
+        self.mode = mode
+    }
+    
     private func setDate(from timeSpan: TimeSpan) {
         self.timsSpanId = timeSpan.id
         self.createdDate = timeSpan.createdDate
@@ -57,17 +63,18 @@ extension DateViewModel {
 // MARK: - Date Calculate
 extension DateViewModel {
     func calcDateDiff() {
-        guard let mode = mode else {
-            fatalError("[Error]: mode가 선택되지 않았습니다.")
-        }
-                        
         let dateContext = DateContext(
             startDate: self.selectedDate,
             endDate: Date(),
             mode: mode
         )
         
-        calculatedDays = dateCalcInteractor.calculate(mode: mode, dateContext: dateContext)                                
+        self.calculatedDays = dateCalcInteractor.calcToString(
+            mode: mode,
+            dateContext: dateContext
+        )
+        
+        self.days = dateCalcInteractor.calcToInt(mode: mode, dateContext: dateContext)
     }
 }
 
@@ -84,12 +91,8 @@ extension DateViewModel {
     }
     
     private func getTimeSpan() -> TimeSpan {
-        guard let mode = self.mode else {
-            fatalError("[Error]: mode가 선택되지 않았습니다.")
-        }
-        
         return TimeSpan(
-            id: self.timsSpanId,
+            id: self.id,
             createdDate: self.createdDate,
             title: self.title,
             selectedDate: self.selectedDate,

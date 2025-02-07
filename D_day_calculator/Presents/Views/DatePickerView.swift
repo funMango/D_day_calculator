@@ -99,7 +99,7 @@ struct CalculatedDaysView: View {
                     .fontWeight(.medium)
                     .foregroundColor(.black)
                 
-                if let caption = viewModel.mode?.caption {
+                if let caption = viewModel.mode.caption {
                     Text("\(caption)")
                         .font(.caption)
                         .foregroundStyle(.gray)
@@ -120,7 +120,7 @@ struct DateSelectView: View {
     var body: some View {
         VStack {
             HStack {
-                Text(viewModel.mode?.dateReference ?? Mode.dDay.dateReference)
+                Text(viewModel.mode.dateReference)
                     .fontWeight(.regular)
                     .foregroundColor(.black)
                 
