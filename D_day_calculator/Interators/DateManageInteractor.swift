@@ -18,7 +18,6 @@ protocol DateManageProtocol {
     func updateAll(from timeSpans: [TimeSpan], to targetDate: Date)
 }
 
-
 class DateManageInteractor: @preconcurrency DateManageProtocol{
     private let dateRepository: DateRepoProtocol
     private let dateCalculator: DateCalcProtocol
@@ -61,22 +60,12 @@ class DateManageInteractor: @preconcurrency DateManageProtocol{
     
     @MainActor
     func updateAll(from timeSpans: [TimeSpan], to targetDate: Date) {
-        if !isEndDateToday(from: timeSpans, targetDate: targetDate) {
-            for timeSpan in timeSpans {
-                let updated = getUpdatedDate(from: timeSpan, to: targetDate)
-                print(timeSpan)
-                dateRepository.updateDate(from: updated)
-            }
-        }        
-    }
-    
-    private func isEndDateToday(from timeSpans: [TimeSpan], targetDate: Date) -> Bool {
         for timeSpan in timeSpans {
-            if timeSpan.today < targetDate { return false }
+            let updated = getUpdatedDate(from: timeSpan, to: targetDate)
+            update(from: updated)
         }
-        return true
     }
-    
+            
     private func getUpdatedDate(from timeSpan: TimeSpan, to targetDate: Date) -> TimeSpan {
         let dateContext = DateContext(
             startDate: timeSpan.selectedDate,
@@ -84,7 +73,8 @@ class DateManageInteractor: @preconcurrency DateManageProtocol{
             mode: timeSpan.mode
         )
         let calculatedDays = dateCalculator.calcToString(mode: timeSpan.mode, dateContext: dateContext)
-        timeSpan.update(today: targetDate, calculatedDays: calculatedDays)
+        let days = dateCalculator.calcToInt(mode: timeSpan.mode, dateContext: dateContext)
+        timeSpan.update(today: targetDate, calculatedDays: calculatedDays, days: days)
         return timeSpan
     }
     
