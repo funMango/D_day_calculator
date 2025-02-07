@@ -19,23 +19,41 @@ struct DateDetailView: View {
                 Text("\(viewModel.timeSpan.title)")
                     .font(.title)
                     .fontWeight(.bold)
-                    .foregroundStyle(.black)
                 
                 Spacer()
             }
             .padding()
+            .padding(.bottom)
             
-            List {
-                DateText(key: "From", value: viewModel.timeSpan.getStartDate())
+            VStack {
+                DateText(key: "Start Date", value: viewModel.timeSpan.getStartDate())
+                    .padding(.horizontal)
+                    .padding(.bottom, 5)
                 
-                DateText(key: "To", value: viewModel.timeSpan.getEndDate())
-                
-                DateText(key: "Result",
-                         value: viewModel.timeSpan.calculatedDays,
-                         caption: viewModel.timeSpan.mode.caption
-                )
+                DateText(key: "End Date", value: viewModel.timeSpan.getEndDate())
+                    .padding(.horizontal)
+                    .padding(.bottom, 5)
             }
-            .listStyle(.plain)                                                        
+            
+            Divider()
+                .padding(.horizontal)
+                .padding(.bottom, 4)
+            
+            HStack() {
+                Spacer()
+                
+                Text("\(viewModel.timeSpan.calculatedDays)")
+                    .font(.title)
+                    .fontWeight(.semibold)
+            }
+            .padding(.horizontal)
+            
+            
+            
+            
+            
+                                                
+            Spacer()
         }
         .navigationTitle("Date Detail")
         .navigationBarTitleDisplayMode(.inline)
@@ -93,7 +111,7 @@ struct DateDetailView: View {
         selectedDate: Date.getDate(year: 2024, month: 3, day: 1),
         today: Date.getDate(year: 2025, month: 3, day: 1),
         mode: .counting,
-        calculatedDays: "",
+        calculatedDays: "+45 days",
         days: 2
     )
     

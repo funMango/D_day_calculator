@@ -30,6 +30,15 @@ enum Mode: String, CaseIterable, Hashable, Codable {
         }
     }
     
+    var dateLastComment: String {
+        switch self {
+        case .dDay:
+            return "Left"
+        case .counting:
+            return "Passed"
+        }
+    }
+    
     var caption: String? {
         switch self {
         case .dDay:
