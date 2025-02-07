@@ -18,7 +18,7 @@ struct D_day_calculatorApp: App {
             MainView(viewModel: vmContainer.getDatesViewModel())
                 .environmentObject(navigationPath)
                 .environmentObject(vmContainer)
-                .onAppear(){
+                .onAppear(){                    
                     // printAllData(DateRepository())
                 }
         }
@@ -31,6 +31,14 @@ struct D_day_calculatorApp: App {
         
         for data in fetched {
             print(data)
+        }
+    }
+    
+    func deleteDataAll(_ dateRepo: DateRepoProtocol) {
+        let fetched = dateRepo.fetchDate()
+        
+        for data in fetched {
+            dateRepo.deleteDate(from: data)
         }
     }
 }

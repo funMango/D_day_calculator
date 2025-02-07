@@ -57,6 +57,7 @@ extension DateViewModel {
         self.selectedDate = timeSpan.selectedDate        
         self.mode = timeSpan.mode
         self.calculatedDays = timeSpan.calculatedDays
+        self.days = timeSpan.days ?? 0
     }
 }
 
@@ -98,7 +99,8 @@ extension DateViewModel {
             selectedDate: self.selectedDate,
             today: Date.today(),
             mode: mode,
-            calculatedDays: self.calculatedDays
+            calculatedDays: self.calculatedDays,
+            days: self.days
         )
     }
 }

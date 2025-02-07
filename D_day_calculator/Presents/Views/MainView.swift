@@ -71,6 +71,9 @@ struct MainView: View {
                 }
             }
         }
+        .onAppear() {
+            viewModel.updateDates()
+        }
         .environmentObject(navigationPath)
         .environmentObject(vmContainer)
     }

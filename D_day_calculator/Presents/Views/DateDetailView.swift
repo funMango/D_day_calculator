@@ -93,7 +93,8 @@ struct DateDetailView: View {
         selectedDate: Date.getDate(year: 2024, month: 3, day: 1),
         today: Date.getDate(year: 2025, month: 3, day: 1),
         mode: .counting,
-        calculatedDays: ""
+        calculatedDays: "",
+        days: 2
     )
     
     let repo = DateRepository()
