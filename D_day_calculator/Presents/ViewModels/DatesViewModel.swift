@@ -8,6 +8,7 @@
 import Foundation
 import SwiftData
 import Combine
+import SwiftUI
 
 class DatesViewModel: ObservableObject {
     @Published var dates: [TimeSpan] = []
@@ -22,7 +23,6 @@ class DatesViewModel: ObservableObject {
         self.dateCalculator = dateCalculator
         self.timer = timer
         
-        updateTime()
         fetchDates()
         observeRepoChange()
     }
@@ -33,11 +33,31 @@ class DatesViewModel: ObservableObject {
             dateManager.delete(from: target)
         }
     }
+    
+    func handleScenePhaseChange(_ newPhase: ScenePhase) {
+        switch newPhase {
+        case .active:
+            print("🔔 앱이 Foreground로 변경됨! 🚀")
+            updateTime()
+            updateDates()
+        case .inactive:
+            print("⏸️ 앱이 Inactive 상태 (일시정지됨)")
+        case .background:
+            print("🌙 앱이 Background로 변경됨! 💤")
+        @unknown default:
+            print("⚠️ scenePhase의 새로운 상태가 감지됨: \(newPhase)")
+        }
+    }
         
     func updateTime() {
         let now = Date()
+        let midnight = Date.midnight(from: now)
         
-        timer.startTimer(now: now, midnight: Date.midnight()) { nextDay in
+        print("타이머 now 시간: \(now.getString())")
+        print("타이머 midnigth 시간: \(midnight.getString())")
+        
+        timer.startTimer(now: now, midnight: midnight) { nextDay in
+            print("⏱️ 타이머 시작: \(Date().getString()), 다음날: \(nextDay.getString())")
             DispatchQueue.main.async { [weak self] in
                 guard let self else { return }
                 updateDates(to: nextDay)

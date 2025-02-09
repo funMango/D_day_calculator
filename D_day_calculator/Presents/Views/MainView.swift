@@ -11,6 +11,7 @@ import SwiftData
 struct MainView: View {
     @EnvironmentObject var navigationPath: NavigationPathObject
     @EnvironmentObject var vmContainer: ViewModelContainer
+    @Environment(\.scenePhase) private var scenePhase
     @StateObject var viewModel: DatesViewModel
             
     var body: some View {
@@ -71,8 +72,8 @@ struct MainView: View {
                 }
             }
         }
-        .onAppear() {
-            viewModel.updateDates()
+        .onChange(of: scenePhase) { oldPhase, newPhase in
+            viewModel.handleScenePhaseChange(newPhase)
         }
         .environmentObject(navigationPath)
         .environmentObject(vmContainer)
