@@ -60,10 +60,22 @@ class DateManageInteractor: @preconcurrency DateManageProtocol{
     
     @MainActor
     func updateAll(from timeSpans: [TimeSpan], to targetDate: Date) {
+        if isNotToday(from: timeSpans) {
+            for timeSpan in timeSpans {
+                let updated = getUpdatedDate(from: timeSpan, to: targetDate)
+                update(from: updated)
+            }
+        }        
+    }
+    
+    private func isNotToday(from timeSpans: [TimeSpan]) -> Bool {
         for timeSpan in timeSpans {
-            let updated = getUpdatedDate(from: timeSpan, to: targetDate)
-            update(from: updated)
+            if timeSpan.today < Date.today() {
+                return true
+            }
         }
+        
+        return false
     }
             
     private func getUpdatedDate(from timeSpan: TimeSpan, to targetDate: Date) -> TimeSpan {
