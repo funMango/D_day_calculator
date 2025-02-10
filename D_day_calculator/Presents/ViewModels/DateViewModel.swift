@@ -13,8 +13,7 @@ class DateViewModel: ObservableObject, Hashable {
     @Published var selectedDate = Date()
     @Published var mode = Mode.dDay
     @Published var calculatedDays = ""
-    var id = UUID().uuidString
-    private var timsSpanId: String?
+    var id = UUID().uuidString    
     private var createdDate = Date.today()
     private var days = 0
     
@@ -51,7 +50,7 @@ extension DateViewModel {
     }
     
     private func setDate(from timeSpan: TimeSpan) {
-        self.timsSpanId = timeSpan.id
+        self.id = timeSpan.id
         self.createdDate = timeSpan.createdDate
         self.title = timeSpan.title
         self.selectedDate = timeSpan.selectedDate        
