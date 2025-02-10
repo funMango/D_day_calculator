@@ -8,8 +8,6 @@
 import Foundation
 import SwiftData
 
-
-
 @Model
 class TimeSpan: Equatable, Identifiable, CustomStringConvertible {
     @Attribute(.unique) var id: String

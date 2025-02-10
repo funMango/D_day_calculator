@@ -89,6 +89,8 @@ struct MainCellView: View {
         HStack {
             VStack(alignment: .leading) {
                 Text(timeSpan.title)
+                    .lineLimit(1)
+                    .truncationMode(.tail)
                     .font(.headline)
                     .padding(.bottom, 1)
                 
