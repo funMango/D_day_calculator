@@ -36,10 +36,7 @@ struct MainView: View {
                 .padding()
                 
                 if viewModel.dates.isEmpty {
-                    Text("No Events")
-                        .font(.title2)
-                        .fontWeight(.semibold)
-                        .foregroundStyle(.lightSilver)
+                    Empty()
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                         .padding(.bottom, 30)                    
                 } else {
@@ -94,6 +91,7 @@ struct MainCellView: View {
                 Text(timeSpan.title)
                     .font(.headline)
                     .padding(.bottom, 1)
+                
                 Text("\(timeSpan.mode.dateReference) \(timeSpan.selectedDate.formatted(DateFormat.USA.rawValue))")
                     .font(.caption)
                     .foregroundStyle(Color.gray)

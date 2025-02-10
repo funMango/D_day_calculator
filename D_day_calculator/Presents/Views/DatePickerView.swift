@@ -91,13 +91,11 @@ struct CalculatedDaysView: View {
                 Text("\(viewModel.calculatedDays)")
                     .font(.system(size: 35))
                     .fontWeight(.bold)
-                    .foregroundColor(.black)
                     .padding(.bottom, -25)
                     
                 Text("\nFrom \(today.formatted(DateFormat.USA.rawValue))")
                     .font(.system(size: 20))
                     .fontWeight(.medium)
-                    .foregroundColor(.black)
                 
                 if let caption = viewModel.mode.caption {
                     Text("\(caption)")
@@ -122,7 +120,6 @@ struct DateSelectView: View {
             HStack {
                 Text(viewModel.mode.dateReference)
                     .fontWeight(.regular)
-                    .foregroundColor(.black)
                 
                 Spacer()
                 
@@ -132,13 +129,14 @@ struct DateSelectView: View {
                     HStack {
                         Text("\(viewModel.selectedDate.formatted(DateFormat.USA.rawValue))")
                             .fontWeight(.semibold)
-                            .foregroundStyle(.black)
+                            .foregroundStyle(.text)
+                            
                             
                         Image(systemName: "chevron.down")
                             .resizable()
                             .fontWeight(.semibold)
                             .frame(width: 10, height: 7)
-                            .foregroundStyle(.black)
+                            .foregroundStyle(.text)
                     }
                 }
             }

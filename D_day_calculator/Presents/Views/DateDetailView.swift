@@ -23,36 +23,33 @@ struct DateDetailView: View {
                 Spacer()
             }
             .padding()
-            .padding(.bottom)
             
             VStack {
-                DateText(key: "Start Date", value: viewModel.timeSpan.getStartDate())
-                    .padding(.horizontal)
-                    .padding(.bottom, 5)
+                HStack {
+                    Text("\(viewModel.timeSpan.calculatedDays)")
+                        .font(.title)
+                        .fontWeight(.semibold)
+                    
+                    Spacer()
+                }
                 
-                DateText(key: "End Date", value: viewModel.timeSpan.getEndDate())
-                    .padding(.horizontal)
-                    .padding(.bottom, 5)
+                HStack {
+                    Text("\(viewModel.timeSpan.mode.dateReference) \(viewModel.timeSpan.selectedDate.formatted(DateFormat.USA.rawValue))")
+                        .font(.callout)
+                        .foregroundStyle(.gray)
+                    
+                    Spacer()
+                }
             }
-            
+            .padding(.horizontal)
+            .padding(.bottom)
+                                                
             Divider()
                 .padding(.horizontal)
                 .padding(.bottom, 4)
             
-            HStack() {
-                Spacer()
-                
-                Text("\(viewModel.timeSpan.calculatedDays)")
-                    .font(.title)
-                    .fontWeight(.semibold)
-            }
-            .padding(.horizontal)
             
-            
-            
-            
-            
-                                                
+                                                                                                            
             Spacer()
         }
         .navigationTitle("Date Detail")
@@ -110,8 +107,8 @@ struct DateDetailView: View {
         title: "Counting Test Detail",
         selectedDate: Date.getDate(year: 2024, month: 3, day: 1),
         today: Date.getDate(year: 2025, month: 3, day: 1),
-        mode: .counting,
-        calculatedDays: "+45 days",
+        mode: .dDay,
+        calculatedDays: "45 days",
         days: 2
     )
     

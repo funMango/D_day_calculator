@@ -48,6 +48,8 @@
 				Repository/DateRepository.swift,
 				UI/BackgroundView.swift,
 				UI/DateText.swift,
+				UI/Empty.swift,
+				UI/Line.swift,
 				UI/LineTextField.swift,
 				UI/NavigationBackBtn.swift,
 				UI/ProgressDay.swift,

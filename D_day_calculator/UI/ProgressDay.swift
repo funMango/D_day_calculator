@@ -19,7 +19,7 @@ struct ProgressDay: View {
                 .padding(.horizontal)
                 .padding(.vertical, 5)
         }
-        .background(Color.black)
+        .background(Color.button)
         .cornerRadius(20)
         .padding()
     }

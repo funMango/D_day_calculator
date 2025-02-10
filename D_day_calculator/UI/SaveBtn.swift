@@ -18,7 +18,7 @@ struct SaveBtn: View {
             .padding()
             .frame(maxWidth: .infinity)
             .frame(height: 50)
-            .background(Color.black)
+            .background(Color.button)
             .cornerRadius(10)
     }
 }
