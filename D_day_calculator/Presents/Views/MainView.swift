@@ -14,7 +14,7 @@ struct MainView: View {
     @Environment(\.scenePhase) private var scenePhase
     @Query(sort: \TimeSpan.days) var timespans: [TimeSpan]
     @StateObject var viewModel: DatesViewModel
-            
+                
     var body: some View {
         NavigationStack(path: $navigationPath.path) {
             VStack {
@@ -53,6 +53,7 @@ struct MainView: View {
                         }
                         .onDelete(perform: viewModel.deleteDate)
                     }
+                    .animation(.easeInOut(duration: 1).delay(1), value: timespans)
                     .listStyle(.plain)
                     .refreshable() {
                         viewModel.updateDates()

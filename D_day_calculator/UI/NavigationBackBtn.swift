@@ -16,7 +16,7 @@ struct NavigationBackBtn: View {
         } label: {
             HStack {
                 Image(systemName: "chevron.left")
-                    .foregroundStyle(.black)
+                    .foregroundStyle(.backButton)
                     .fontWeight(.medium)
             }
         }

@@ -9,7 +9,7 @@ import Foundation
 import SwiftData
 
 @Model
-class TimeSpan: Equatable, Identifiable, CustomStringConvertible {
+class TimeSpan: Equatable, CustomStringConvertible {
     var id = ""
     var createdDate = Date.today()
     var title = ""
