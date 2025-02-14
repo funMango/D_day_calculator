@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct DateDetailView: View {
     @EnvironmentObject var navigationPath: NavigationPathObject
@@ -111,11 +112,9 @@ struct DateDetailView: View {
         calculatedDays: "45 days",
         days: 2
     )
-    
-    let repo = DateRepository()
-            
-    let viewModelContainer = ViewModelContainer(dateRepository: repo)
-    
+        
+    let viewModelContainer = ViewModelContainer.getViewModelContainer()
+                        
     DateDetailView(viewModel: viewModelContainer.getDateDetailViewModel(timeSpan: timeSpan))
         .environmentObject(NavigationPathObject())
 }

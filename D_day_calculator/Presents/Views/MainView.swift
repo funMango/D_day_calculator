@@ -12,6 +12,7 @@ struct MainView: View {
     @EnvironmentObject var navigationPath: NavigationPathObject
     @EnvironmentObject var vmContainer: ViewModelContainer
     @Environment(\.scenePhase) private var scenePhase
+    @Query(sort: \TimeSpan.days) var timespans: [TimeSpan]
     @StateObject var viewModel: DatesViewModel
             
     var body: some View {
@@ -41,7 +42,7 @@ struct MainView: View {
                         .padding(.bottom, 30)                    
                 } else {
                     List {
-                        ForEach(viewModel.dates, id: \.self) { timeSpan in
+                        ForEach(timespans, id: \.self) { timeSpan in
                             Button {
                                 navigationPath.path.append(
                                     NavigationTarget.dateDetail(viewModel: vmContainer.getDateDetailViewModel(timeSpan: timeSpan))
@@ -107,7 +108,11 @@ struct MainCellView: View {
 }
 
 #Preview {    
-    let viewModelContainer = ViewModelContainer(dateRepository: DateRepository())
+    let viewModelContainer = ViewModelContainer(
+        dateRepository: DateRepository(
+            modelContainer: DataContainer.shared.getModelContainer()
+        )
+    )
     
     MainView(viewModel: viewModelContainer.getDatesViewModel())
         .environmentObject(NavigationPathObject())

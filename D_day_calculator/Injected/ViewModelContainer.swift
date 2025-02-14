@@ -8,9 +8,9 @@
 import Foundation
 
 class ViewModelContainer: ObservableObject {
-    var dateRepository: DateRepoProtocol
+    var dateRepository: DateRepository
     
-    init(dateRepository: DateRepoProtocol) {
+    init(dateRepository: DateRepository) {
         self.dateRepository = dateRepository
     }
     
@@ -42,6 +42,16 @@ class ViewModelContainer: ObservableObject {
         return DateManageInteractor(
             dateRepository: dateRepository,
             dateCalculator: DateCalcInterator()
+        )
+    }
+}
+
+extension ViewModelContainer {
+    @MainActor static func getViewModelContainer() -> ViewModelContainer {
+        return ViewModelContainer(
+            dateRepository: DateRepository(
+                modelContainer: DataContainer.shared.getModelContainer()
+            )
         )
     }
 }

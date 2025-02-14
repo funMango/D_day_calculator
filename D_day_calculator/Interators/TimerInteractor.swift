@@ -16,8 +16,7 @@ class TimerInteractor: TimerProtocol {
     
     func startTimer(now: Date, midnight: Date, action: @escaping (_ nextDay: Date) -> Void) {
         timer?.cancel() // 기존 타이머 해제
-        
-        
+                
         // 자정까지 남은 시간(초)
         let secondsUntilMidnight = midnight.timeIntervalSince(now)
         print("현재시간: \(now.getString()), \(secondsUntilMidnight)초 후에 업데이트")

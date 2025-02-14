@@ -196,8 +196,8 @@ struct DatePickerWheelView: View {
     }
 }
 
-#Preview {
-    let viewModelContainer = ViewModelContainer(dateRepository: DateRepository())
+#Preview {    
+    let viewModelContainer = ViewModelContainer.getViewModelContainer()
     let viewModel = viewModelContainer.getDateViewModel(mode: .counting)
     
     DatePickerView(viewModel: viewModel, type: .create)

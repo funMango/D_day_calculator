@@ -56,7 +56,7 @@ extension DateViewModel {
         self.selectedDate = timeSpan.selectedDate        
         self.mode = timeSpan.mode
         self.calculatedDays = timeSpan.calculatedDays
-        self.days = timeSpan.days ?? 0
+        self.days = timeSpan.days
     }
 }
 

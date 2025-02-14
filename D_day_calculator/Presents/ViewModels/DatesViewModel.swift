@@ -70,7 +70,7 @@ class DatesViewModel: ObservableObject {
     }
     
     private func fetchDates() {
-        self.dates = dateManager.fetch().sorted(by: { $0.days ?? 0 < $1.days ?? 0})
+        self.dates = dateManager.fetch().sorted(by: { $0.days < $1.days})
     }
         
     private func observeRepoChange() {

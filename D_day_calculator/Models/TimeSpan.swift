@@ -10,14 +10,14 @@ import SwiftData
 
 @Model
 class TimeSpan: Equatable, Identifiable, CustomStringConvertible {
-    @Attribute(.unique) var id: String
-    var createdDate = Date()
-    var title: String
-    var selectedDate: Date
-    var today: Date
-    var mode: Mode
-    var calculatedDays: String
-    var days: Int?
+    var id = ""
+    var createdDate = Date.today()
+    var title = ""
+    var selectedDate = Date.today()
+    var today = Date.today()
+    var mode = Mode.dDay
+    var calculatedDays = ""
+    var days: Int = 0
     
     init(id: String? = UUID().uuidString,
          createdDate: Date? = Date(),
@@ -73,7 +73,7 @@ class TimeSpan: Equatable, Identifiable, CustomStringConvertible {
               - today: \(today)
               - mode: \(mode)
               - calculatedDays: \(calculatedDays)
-              - days: \(days ?? 0)
+              - days: \(days)
             """
         }
 }

@@ -23,16 +23,9 @@ class DateRepository: DateRepoProtocol {
     var event = PassthroughSubject<Void, Never>()
     
     @MainActor
-    init() {
-        do {
-            self.modelContainer = try ModelContainer(
-                for: TimeSpan.self,
-                configurations: ModelConfiguration(isStoredInMemoryOnly: false)
-            )
-            self.modelContext = modelContainer.mainContext            
-        } catch {
-            fatalError("[Error] DateRepository container 시작 실패: \(error)")
-        }
+    init(modelContainer: ModelContainer) {
+        self.modelContainer = modelContainer
+        self.modelContext = modelContainer.mainContext
     }
     
     func saveDate(from timeSpan: TimeSpan) {
