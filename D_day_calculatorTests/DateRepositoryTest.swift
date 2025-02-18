@@ -8,7 +8,7 @@
 import XCTest
 
 final class DateRepositoryTest: XCTestCase {
-    @MainActor var dateRepository = DateRepository()
+    @MainActor var dateRepository = DateRepository(modelContainer: DataContainer.shared.modelContainer)
     
     
     override func setUpWithError() throws {

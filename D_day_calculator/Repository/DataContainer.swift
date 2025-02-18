@@ -11,16 +11,15 @@ import SwiftData
 
 final class DataContainer {
     static let shared = DataContainer()
+    var modelContainer: ModelContainer
     
-    private init() { }
-    
-    func getModelContainer () -> ModelContainer {
+    private init() {
         do {
-            let schema = Schema([TimeSpan.self])
-            return try ModelContainer(
+            let schema = Schema([TimeSpan.self, User.self])
+            self.modelContainer = try ModelContainer(
                 for: schema,
                 configurations: ModelConfiguration(isStoredInMemoryOnly: false, cloudKitDatabase: .automatic)
-            )            
+            )
         } catch {
             fatalError("[Error] DateRepository container 시작 실패: \(error)")
         }

@@ -13,25 +13,27 @@ import SwiftUI
 class DatesViewModel: ObservableObject {
     @Published var dates: [TimeSpan] = []
     private var dateManager: DateManageProtocol
+    private var userManager: UserProtocol
     private var dateCalculator: DateCalcProtocol
     private var timer: TimerProtocol
     private var cancellables = Set<AnyCancellable>()
+    private var user: User?
         
-    init(dates: [TimeSpan] = [], dateManager: DateManageProtocol, dateCalculator: DateCalcProtocol, timer: TimerProtocol) {
+    init(dates: [TimeSpan] = [],
+         dateManager: DateManageProtocol,
+         userManager: UserProtocol,
+         dateCalculator: DateCalcProtocol,
+         timer: TimerProtocol
+    ) {
         self.dates = dates
         self.dateManager = dateManager
+        self.userManager = userManager
         self.dateCalculator = dateCalculator
         self.timer = timer
-        
-        fetchDates()
-        observeRepoChange()
     }
     
-    func deleteDate(from offsets: IndexSet) {
-        for index in offsets {
-            let target = dates[index]
-            dateManager.delete(from: target)
-        }
+    func deleteDate(_ timeSpan: TimeSpan) {
+        dateManager.delete(from: timeSpan)
     }
     
     func handleScenePhaseChange(_ newPhase: ScenePhase) {
@@ -69,16 +71,31 @@ class DatesViewModel: ObservableObject {
         self.dateManager.updateAll(from: dates, to: targetDate)
     }
     
-    private func fetchDates() {
-        self.dates = dateManager.fetch().sorted(by: { $0.days < $1.days})
-    }
+    func fetchUser() async {
+        print("✅ User 패치 시작!")
         
-    private func observeRepoChange() {
-        dateManager.event
-            .sink { [weak self] in                
-                self?.fetchDates()
-            }
-            .store(in: &cancellables)
+        if let user = await userManager.fetchUser() {
+            self.user = user
+        } else {
+            print("✅ user 비었음")
+            await setUser()
+            setDefaultData()
+        }
+    }
+            
+    private func setUser() async {
+        print("✅ setUser 시작")
+        let user = User(isFirstLaunch: false)
+        self.user = user
+        await userManager.save(from: user)
+    }
+    
+    private func setDefaultData() {
+        let defaultData = DefaultData.getDefaultTimeSpans()
+        
+        for data in defaultData {
+            dateManager.save(from: data)
+        }
     }
 }
 

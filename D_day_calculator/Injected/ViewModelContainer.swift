@@ -9,9 +9,11 @@ import Foundation
 
 class ViewModelContainer: ObservableObject {
     var dateRepository: DateRepository
+    var userRepository: UserRepository
     
-    init(dateRepository: DateRepository) {
+    init(dateRepository: DateRepository, userRepository: UserRepository) {
         self.dateRepository = dateRepository
+        self.userRepository = userRepository
     }
     
     func getDateViewModel(mode: Mode, timeSpan: TimeSpan? = nil) -> DateViewModel {
@@ -26,6 +28,7 @@ class ViewModelContainer: ObservableObject {
     func getDatesViewModel() -> DatesViewModel {
         return DatesViewModel(
             dateManager: getDateManageInteractor(),
+            userManager: UserInteractor(userRepository: userRepository),
             dateCalculator: DateCalcInterator(),
             timer: TimerInteractor()
         )
@@ -50,7 +53,10 @@ extension ViewModelContainer {
     @MainActor static func getViewModelContainer() -> ViewModelContainer {
         return ViewModelContainer(
             dateRepository: DateRepository(
-                modelContainer: DataContainer.shared.getModelContainer()
+                modelContainer: DataContainer.shared.modelContainer
+            ),
+            userRepository: UserRepository(
+                modelContainer: DataContainer.shared.modelContainer
             )
         )
     }

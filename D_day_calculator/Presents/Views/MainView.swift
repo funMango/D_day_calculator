@@ -12,8 +12,8 @@ struct MainView: View {
     @EnvironmentObject var navigationPath: NavigationPathObject
     @EnvironmentObject var vmContainer: ViewModelContainer
     @Environment(\.scenePhase) private var scenePhase
-    @Query(sort: \TimeSpan.days) var timespans: [TimeSpan]
     @StateObject var viewModel: DatesViewModel
+    @Query(sort: \TimeSpan.days) var timespans: [TimeSpan]    
                 
     var body: some View {
         NavigationStack(path: $navigationPath.path) {
@@ -36,7 +36,7 @@ struct MainView: View {
                 }
                 .padding()
                 
-                if viewModel.dates.isEmpty {
+                if timespans.isEmpty {
                     Empty()
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                         .padding(.bottom, 30)                    
@@ -50,8 +50,14 @@ struct MainView: View {
                             } label: {
                                 MainCellView(timeSpan: timeSpan)
                             }
+                            .swipeActions {
+                                Button(role: .destructive) {
+                                    viewModel.deleteDate(timeSpan)
+                                } label: {
+                                    Label("Delete", systemImage: "trash")
+                                }
+                            }
                         }
-                        .onDelete(perform: viewModel.deleteDate)
                     }
                     .animation(.easeInOut(duration: 1).delay(1), value: timespans)
                     .listStyle(.plain)
@@ -73,6 +79,11 @@ struct MainView: View {
         }
         .onChange(of: scenePhase) { oldPhase, newPhase in
             viewModel.handleScenePhaseChange(newPhase)
+        }
+        .onAppear {
+            Task {
+                await viewModel.fetchUser()
+            }
         }
         .environmentObject(navigationPath)
         .environmentObject(vmContainer)
@@ -109,11 +120,7 @@ struct MainCellView: View {
 }
 
 #Preview {    
-    let viewModelContainer = ViewModelContainer(
-        dateRepository: DateRepository(
-            modelContainer: DataContainer.shared.getModelContainer()
-        )
-    )
+    let viewModelContainer = ViewModelContainer.getViewModelContainer()
     
     MainView(viewModel: viewModelContainer.getDatesViewModel())
         .environmentObject(NavigationPathObject())

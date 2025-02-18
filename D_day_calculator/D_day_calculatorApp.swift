@@ -12,7 +12,7 @@ import SwiftData
 struct D_day_calculatorApp: App {
     @StateObject var navigationPath = NavigationPathObject()
     @StateObject var vmContainer = ViewModelContainer.getViewModelContainer()
-    let modelContainer = DataContainer.shared.getModelContainer()
+    let modelContainer = DataContainer.shared.modelContainer
             
     var body: some Scene {        
         WindowGroup {            
