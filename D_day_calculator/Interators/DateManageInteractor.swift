@@ -18,7 +18,7 @@ protocol DateManageProtocol {
     func updateAll(from timeSpans: [TimeSpan], to targetDate: Date)
 }
 
-class DateManageInteractor: @preconcurrency DateManageProtocol{
+class DateManageInteractor: DateManageProtocol{
     private let dateRepository: DateRepoProtocol
     private let dateCalculator: DateCalcProtocol
     private var cancellables = Set<AnyCancellable>()
@@ -52,13 +52,11 @@ class DateManageInteractor: @preconcurrency DateManageProtocol{
             delete(from: timeSpan)
         }
     }
-    
-    @MainActor
+        
     func update(from timeSpan: TimeSpan) {
         dateRepository.updateDate(from: timeSpan)
     }
-    
-    @MainActor
+        
     func updateAll(from timeSpans: [TimeSpan], to targetDate: Date) {
         if isNotToday(from: timeSpans) {
             for timeSpan in timeSpans {

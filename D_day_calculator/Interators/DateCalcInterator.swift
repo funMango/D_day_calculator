@@ -31,7 +31,7 @@ extension DateCalcProtocol {
 struct DateCalcInterator: DateCalcProtocol{
     func calcToString(mode: Mode, dateContext: DateContext) -> String {
         let days = daysCalc(mode: mode, dateContext: dateContext)
-        return daysCalcToString(from: days)
+        return daysCalcToString(from: days, mode: mode)
     }
     
     func calcToInt(mode: Mode, dateContext: DateContext) -> Int {
@@ -47,14 +47,19 @@ struct DateCalcInterator: DateCalcProtocol{
         }
     }
     
-    private func daysCalcToString(from days: Int) -> String {
-        if days == 0 {
-            return "Event day"
-        } else if days > 0 {
+    private func daysCalcToString(from days: Int, mode: Mode) -> String {
+        switch mode {
+        case .dDay:
+            if days == 0 {
+                return "Event day"
+            } else if days > 0 {
+                return "passed"
+            } else {
+                let absDay = abs(days)
+                return "\(absDay) days"
+            }
+        case .counting:
             return "+\(days) days"
-        } else {
-            let absDay = abs(days)
-            return "\(absDay) days"
         }
     }
 }

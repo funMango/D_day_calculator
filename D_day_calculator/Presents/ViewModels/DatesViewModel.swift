@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftData
+import CoreData
 import Combine
 import SwiftUI
 
@@ -30,8 +31,27 @@ class DatesViewModel: ObservableObject {
         self.userManager = userManager
         self.dateCalculator = dateCalculator
         self.timer = timer
+        
+        isFirstLaunch()
     }
     
+    private func isFirstLaunch() {
+        let hasBeenLaunchedBefore = UserDefaults.standard.bool(forKey: "hasBeenLaunchedBefore")
+        if !hasBeenLaunchedBefore {
+            UserDefaults.standard.set(true, forKey: "hasBeenLaunchedBefore")
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                Task {
+                    await self.fetchUser()
+                }
+            }
+        } else {
+            Task {
+                await fetchUser()
+            }
+        }
+    }
+            
     func deleteDate(_ timeSpan: TimeSpan) {
         dateManager.delete(from: timeSpan)
     }
@@ -73,11 +93,14 @@ class DatesViewModel: ObservableObject {
     
     func fetchUser() async {
         print("✅ User 패치 시작!")
+                                        
+        let user = await userManager.fetchUser()
         
-        if let user = await userManager.fetchUser() {
+        if let user = user {
+            print("✅ user fetch 완료!")
             self.user = user
         } else {
-            print("✅ user 비었음")
+            print("⚠️ user 비었음")
             await setUser()
             setDefaultData()
         }

@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftData
+import CoreData
 
 protocol UserRepoProtocol {
     func save(from user: User) async
@@ -64,11 +65,10 @@ class UserRepository: UserRepoProtocol {
     }
     
     
-    @MainActor func fetchUser() async -> User? {
+    @MainActor func fetchUser() async -> User? {                
         do {
             let descripter = FetchDescriptor<User>()
-                        
-            print("✅ User fetch가 완료되었습니다.")
+                                    
             return try await withCheckedThrowingContinuation{ continuation in
                 DispatchQueue.main.async {
                     do {
@@ -85,6 +85,8 @@ class UserRepository: UserRepoProtocol {
             fatalError("⚠️ [Error] User fetch fail: \(error)")
         }
     }
+    
+    
     
     @MainActor func fetchUsers() async -> [User] {
         do {

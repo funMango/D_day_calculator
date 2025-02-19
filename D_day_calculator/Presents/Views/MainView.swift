@@ -59,7 +59,7 @@ struct MainView: View {
                             }
                         }
                     }
-                    .animation(.easeInOut(duration: 1).delay(1), value: timespans)
+                    .animation(.easeInOut(duration: 5), value: timespans)
                     .listStyle(.plain)
                     .refreshable() {
                         viewModel.updateDates()
@@ -79,11 +79,6 @@ struct MainView: View {
         }
         .onChange(of: scenePhase) { oldPhase, newPhase in
             viewModel.handleScenePhaseChange(newPhase)
-        }
-        .onAppear {
-            Task {
-                await viewModel.fetchUser()
-            }
         }
         .environmentObject(navigationPath)
         .environmentObject(vmContainer)
