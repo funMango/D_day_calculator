@@ -12,7 +12,7 @@ import Combine
 import SwiftUI
 
 class DatesViewModel: ObservableObject {
-    @Published var dates: [TimeSpan] = []
+    @Published var timeSpans: [TimeSpan] = []
     private var dateManager: DateManageProtocol
     private var userManager: UserProtocol
     private var dateCalculator: DateCalcProtocol
@@ -20,19 +20,20 @@ class DatesViewModel: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
     private var user: User?
         
-    init(dates: [TimeSpan] = [],
+    init(timeSpans: [TimeSpan] = [],
          dateManager: DateManageProtocol,
          userManager: UserProtocol,
          dateCalculator: DateCalcProtocol,
          timer: TimerProtocol
     ) {
-        self.dates = dates
+        self.timeSpans = timeSpans
         self.dateManager = dateManager
         self.userManager = userManager
         self.dateCalculator = dateCalculator
         self.timer = timer
         
         isFirstLaunch()
+        updateTime()
     }
     
     private func isFirstLaunch() {
@@ -50,6 +51,10 @@ class DatesViewModel: ObservableObject {
                 await fetchUser()
             }
         }
+    }
+    
+    func setTimeSpans(from timeSpans: [TimeSpan]) {
+        self.timeSpans = timeSpans
     }
             
     func deleteDate(_ timeSpan: TimeSpan) {
@@ -88,7 +93,7 @@ class DatesViewModel: ObservableObject {
     }
     
     func updateDates(to targetDate: Date = Date.today()) {
-        self.dateManager.updateAll(from: dates, to: targetDate)
+        self.dateManager.updateAll(from: timeSpans, to: targetDate)
     }
     
     func fetchUser() async {

@@ -36,13 +36,13 @@ struct MainView: View {
                 }
                 .padding()
                 
-                if timespans.isEmpty {
+                if viewModel.timeSpans.isEmpty {
                     Empty()
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                         .padding(.bottom, 30)                    
                 } else {
                     List {
-                        ForEach(timespans, id: \.self) { timeSpan in
+                        ForEach(viewModel.timeSpans, id: \.self) { timeSpan in
                             Button {
                                 navigationPath.path.append(
                                     NavigationTarget.dateDetail(viewModel: vmContainer.getDateDetailViewModel(timeSpan: timeSpan))
@@ -79,6 +79,14 @@ struct MainView: View {
         }
         .onChange(of: scenePhase) { oldPhase, newPhase in
             viewModel.handleScenePhaseChange(newPhase)
+        }
+        .onChange(of: timespans) { old, new in
+            print("✅ timeSpans updated")
+            viewModel.setTimeSpans(from: new)
+        }
+        .onAppear() {
+            print("✅ timespans loaded")
+            viewModel.setTimeSpans(from: timespans)
         }
         .environmentObject(navigationPath)
         .environmentObject(vmContainer)

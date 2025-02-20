@@ -53,7 +53,7 @@ struct DateCalcInterator: DateCalcProtocol{
             if days == 0 {
                 return "Event day"
             } else if days > 0 {
-                return "passed"
+                return "Passed"
             } else {
                 let absDay = abs(days)
                 return "\(absDay) days"

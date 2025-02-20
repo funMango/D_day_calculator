@@ -67,7 +67,7 @@ class DateManageInteractor: DateManageProtocol{
     }
     
     private func isNotToday(from timeSpans: [TimeSpan]) -> Bool {
-        for timeSpan in timeSpans {
+        for timeSpan in timeSpans {                        
             if timeSpan.today < Date.today() {
                 return true
             }
