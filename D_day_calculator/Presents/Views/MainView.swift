@@ -19,7 +19,7 @@ struct MainView: View {
         NavigationStack(path: $navigationPath.path) {
             VStack {
                 HStack {
-                    Text("Home")
+                    Text("Event")
                         .font(.title)
                         .fontWeight(.bold)
                     

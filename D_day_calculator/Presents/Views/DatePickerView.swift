@@ -62,12 +62,12 @@ struct DatePickerView: View {
                 .padding()
             }
         }
-        .navigationTitle("Date")
+        .navigationTitle("Event")
         .navigationBarTitleDisplayMode(.inline)
         .environmentObject(viewModel)
         .sheet(isPresented: $showingSheet) {
             DatePickerWheelView(selectedDate: $viewModel.selectedDate)
-                .presentationDetents([.fraction(0.4)])
+                .presentationDetents([.fraction(0.65)])
                 .environmentObject(viewModel)
                 .presentationDragIndicator(.visible)
         }
@@ -165,7 +165,7 @@ struct DatePickerWheelView: View {
                     displayedComponents: .date
                 )
                 .labelsHidden()
-                .datePickerStyle(.wheel)
+                .datePickerStyle(.graphical)
             } else {
                 DatePicker(
                     "Select Date",
@@ -174,7 +174,8 @@ struct DatePickerWheelView: View {
                     displayedComponents: .date
                 )
                 .labelsHidden()
-                .datePickerStyle(.wheel)
+                .datePickerStyle(.graphical)
+                .tint(.backButton)
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)

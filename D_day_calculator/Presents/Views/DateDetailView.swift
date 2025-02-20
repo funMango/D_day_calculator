@@ -53,7 +53,7 @@ struct DateDetailView: View {
                                                                                                             
             Spacer()
         }
-        .navigationTitle("Date Detail")
+        .navigationTitle("Event Detail")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
