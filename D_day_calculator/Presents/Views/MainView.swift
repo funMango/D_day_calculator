@@ -24,14 +24,18 @@ struct MainView: View {
                         .fontWeight(.bold)
                     
                     Spacer()
-                                                                                
+                    
                     Button {
                         navigationPath.path.append(NavigationTarget.modeSelection)
                     } label: {
-                        Image(systemName: "plus")
-                            .resizable()
-                            .frame(width: 20, height: 20)
-                            .foregroundStyle(.red)
+                        Symbol(name: "plus", size: 20, color: .red)
+                    }
+                    .padding(.trailing, 4)
+                    
+                    Button {
+                        navigationPath.path.append(NavigationTarget.settingView)
+                    } label: {
+                        Symbol(name: "slider.horizontal.3", size: 20, color: .red)
                     }
                 }
                 .padding()
@@ -74,6 +78,8 @@ struct MainView: View {
                     DatePickerView(viewModel: viewModel, type: type)
                 case .dateDetail(let viewModel):
                     DateDetailView(viewModel: viewModel)
+                case .settingView:
+                    SettingView()
                 }
             }
         }
