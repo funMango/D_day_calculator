@@ -166,6 +166,7 @@ struct DatePickerWheelView: View {
                 )
                 .labelsHidden()
                 .datePickerStyle(.graphical)
+                .tint(.backButton)
             } else {
                 DatePicker(
                     "Select Date",

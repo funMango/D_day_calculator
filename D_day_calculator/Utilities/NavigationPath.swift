@@ -12,6 +12,7 @@ enum NavigationTarget: Hashable {
     case modeSelection
     case datePicker(viewModel: DateViewModel, type: DatePickerViewType)
     case dateDetail(viewModel: DateDetailViewModel)
+    case settingView
     
     func hash(into hasher: inout Hasher) {
         switch self {
@@ -22,7 +23,10 @@ enum NavigationTarget: Hashable {
             hasher.combine(type)
         case .dateDetail(let viewModel):
             hasher.combine(viewModel.id)
+        case .settingView:
+            hasher.combine(0)
         }
+    
     }
 
     static func == (lhs: NavigationTarget, rhs: NavigationTarget) -> Bool {
@@ -33,6 +37,8 @@ enum NavigationTarget: Hashable {
             return lhsViewModel.id == rhsViewModel.id && lhsType == rhsType            
         case (.dateDetail(let lhsViewModel), .dateDetail(let rhsViewModel)):
             return lhsViewModel.id == rhsViewModel.id
+        case (.settingView, .settingView):
+            return true
         default:
             return false
         }
