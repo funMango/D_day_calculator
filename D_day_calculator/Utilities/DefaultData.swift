@@ -11,14 +11,14 @@ class DefaultData {
     static func getDefaultTimeSpans() -> [TimeSpan] {
         return  [
             TimeSpan(
-                title: "🍿 Movie release day",
-                selectedDate: Calendar.current.date(byAdding: .day, value: 1, to: Date.today()) ?? Date.today(),
+                title: "📱 new phone release day!",
+                selectedDate: Calendar.current.date(byAdding: .day, value: 3, to: Date.today()) ?? Date.today(),
                 today: Date.today(),
                 mode: .dDay,
-                calculatedDays: "1days"
+                calculatedDays: "3days"
             ),
             TimeSpan(
-                title: "💍 Wedding Anniversary",
+                title: "💻 new notebook release day!",
                 selectedDate: Calendar.current.date(byAdding: .day, value: -9, to: Date.today()) ?? Date.today(),
                 today: Date.today(),
                 mode: .counting,
