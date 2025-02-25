@@ -13,9 +13,9 @@ struct SettingView: View {
     
     var body: some View {
         List {
-            Section() {
+            Section(header: Text("policy")) {
                 Button {
-                    if let url = URL(string: Policy.privacy.url) {
+                    if let url = URL(string: Url.privacy.url) {
                         selectedURL = IdentifiableURL(url: url)
                     }
                 } label: {
@@ -23,11 +23,21 @@ struct SettingView: View {
                 }
                 
                 Button {
-                    if let url = URL(string: Policy.terms.url) {
+                    if let url = URL(string: Url.terms.url) {
                         selectedURL = IdentifiableURL(url: url)
                     }
                 } label: {
                     SettingListCell(symbol: "text.document", text: "Terms of service")
+                }
+            }
+            
+            Section(header: Text("support")) {
+                Button {
+                    if let url = URL(string: Url.homepage.url) {
+                        selectedURL = IdentifiableURL(url: url)
+                    }
+                } label: {
+                    SettingListCell(symbol: "globe", text: "Web")
                 }
             }
             

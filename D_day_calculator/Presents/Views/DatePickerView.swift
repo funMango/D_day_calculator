@@ -67,7 +67,7 @@ struct DatePickerView: View {
         .environmentObject(viewModel)
         .sheet(isPresented: $showingSheet) {
             DatePickerWheelView(selectedDate: $viewModel.selectedDate)
-                .presentationDetents([.fraction(0.65)])
+                .presentationDetents([.fraction(0.8)])
                 .environmentObject(viewModel)
                 .presentationDragIndicator(.visible)
         }
